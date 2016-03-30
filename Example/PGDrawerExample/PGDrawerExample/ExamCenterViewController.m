@@ -8,43 +8,65 @@
 
 #import "ExamCenterViewController.h"
 
-@interface ExamCenterViewController ()
+#import "PGDrawerTransition.h"
 
+#import "ExamDrawerViewController.h"
+
+@interface ExamCenterViewController ()
+@property (nonatomic, strong) PGDrawerTransition *drawerTransition;
+@property (nonatomic, strong) ExamDrawerViewController *drawerViewController;
+@property (nonatomic, strong) UIButton *button;
 @end
 
 @implementation ExamCenterViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self.view setBackgroundColor:[UIColor redColor]];
-    // Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
     
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{        
-//        UIViewController *vc = [[UIViewController alloc] init];
-//        [vc.view setBackgroundColor:[UIColor darkGrayColor]];
-//        [self.navigationController presentViewController:vc animated:YES completion:nil];
-//    });
+    self.button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.button setBackgroundColor:[UIColor redColor]];
+    [self.button addTarget:self action:@selector(click) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.button];
+    
+    self.drawerViewController = [[ExamDrawerViewController alloc] init];
+    
+    self.drawerTransition = [[PGDrawerTransition alloc] initWithTargetViewController:self
+                                                                drawerViewController:self.drawerViewController];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithTitle:@"메뉴"
+                                                             style:UIBarButtonItemStyleDone
+                                                            target:self
+                                                            action:@selector(open)];
+    
+    self.navigationItem.leftBarButtonItem = left;
 }
-*/
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    [self.button setFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
+}
+
+- (void)click
+{
+    if ([self.button.backgroundColor isEqual:[UIColor redColor]] == YES) {
+        [self.button setBackgroundColor:[UIColor blueColor]];
+    } else {
+        [self.button setBackgroundColor:[UIColor redColor]];
+    }
+}
+
+- (void)open
+{
+    [self.drawerTransition presentDrawerViewController];
+}
 
 @end

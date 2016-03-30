@@ -8,31 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^PGDrawerInteractionBlock)(void);
-
-typedef NS_ENUM(NSInteger, PGDrawerTransitionType) {
-    
-    PGDrawerTransitionTypeMain,
-    PGDrawerTransitionTypeDrawer,
-    
-    PGDrawerTransitionTypeTarget,
-};
-
-@protocol PGDrawerTransitionDelegate <NSObject>
-
-- (UIViewController *)viewControllerWithDrawerTransitionType:(PGDrawerTransitionType)transitionViewType;
-- (void)drawerTransitionWithCurrentViewController:(UIViewController *)currentViewController;
-
-@end
+//typedef void(^PGDrawerInteractionBlock)(void);
 
 @interface PGDrawerTransition : UIPercentDrivenInteractiveTransition
 <UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate>
+//
+//@property (nonatomic, copy) PGDrawerInteractionBlock presentBlock;
+//@property (nonatomic, copy) PGDrawerInteractionBlock dismissBlock;
 
-@property (nonatomic, assign) PGDrawerTransitionType transitionType;
+- (instancetype)initWithTargetViewController:(UIViewController *)targetViewController drawerViewController:(UIViewController *)drawerViewController;
 
-@property (nonatomic, weak) id <PGDrawerTransitionDelegate> delegate;
-
-@property (nonatomic, copy) PGDrawerInteractionBlock presentBlock;
-@property (nonatomic, copy) PGDrawerInteractionBlock dismissBlock;
+- (void)presentDrawerViewController;
+- (void)dismissDrawerViewController;
 
 @end

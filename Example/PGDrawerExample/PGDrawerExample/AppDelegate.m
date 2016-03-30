@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "PGDrawerViewContainer.h"
 
 #import "ExamCenterViewController.h"
 
@@ -21,16 +20,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    UIViewController *drawerVc = [[UIViewController alloc] init];
-    [drawerVc.view setBackgroundColor:[UIColor blueColor]];
-    
+
     ExamCenterViewController *centerVc = [[ExamCenterViewController alloc] init];
     [centerVc.view setBackgroundColor:[UIColor redColor]];
     UINavigationController *nv = [[UINavigationController alloc] initWithRootViewController:centerVc];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self.window setRootViewController:[[PGDrawerViewContainer alloc] initWithMainViewController:nv drawerViewController:drawerVc]];
+    [self.window setRootViewController:nv];
     [self.window makeKeyAndVisible];
     
     return YES;

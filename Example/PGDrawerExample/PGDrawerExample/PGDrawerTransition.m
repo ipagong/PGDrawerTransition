@@ -10,86 +10,81 @@
 
 @interface PGDrawerTransition ()
 
-@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *mainViewGesture;
-@property (nonatomic, strong) UIPanGestureRecognizer *drawerViewGesture;
-
-@property (nonatomic, weak) UIViewController *mainViewController;
-@property (nonatomic, weak) UIViewController *drawerViewController;
 @property (nonatomic, weak) UIViewController *targetViewController;
+@property (nonatomic, weak) UIViewController *drawerViewController;
 
 @property (nonatomic, weak) UIViewController *currentViewController;
 
+@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *mainViewGesture;
+@property (nonatomic, strong) UIPanGestureRecognizer *drawerViewGesture;
+
+@property (nonatomic, readonly) BOOL isPresentedDrawer;
 
 @end
 
 @implementation PGDrawerTransition
 
-- (instancetype)init
+- (instancetype)initWithTargetViewController:(UIViewController *)targetViewController drawerViewController:(UIViewController *)drawerViewController
 {
     self = [super init];
     if (self) {
-        [self setupData];
+        self.targetViewController  = targetViewController;
+        self.drawerViewController  = drawerViewController;
+        self.currentViewController = targetViewController;
+
+        [self setupGesture];
     }
     return self;
 }
 
-- (void)setupData
+- (void)setupGesture
 {
     self.mainViewGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewGestureHandler:)];
     self.mainViewGesture.edges = UIRectEdgeLeft;
     
     self.drawerViewGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(drawerViewGestureHandler:)];
     
-    [self setupViewController];
-
-}
-
-- (void)setupViewController
-{
-    if (self.delegate == nil || [self.delegate respondsToSelector:@selector(viewControllerWithDrawerTransitionType:)] == NO) return;
-    
-    UIViewController *mainVc   = [self.delegate viewControllerWithDrawerTransitionType:PGDrawerTransitionTypeMain];
-    UIViewController *drawerVc = [self.delegate viewControllerWithDrawerTransitionType:PGDrawerTransitionTypeDrawer];
-    UIViewController *targetVc = [self.delegate viewControllerWithDrawerTransitionType:PGDrawerTransitionTypeTarget];
-    
-    if (mainVc && mainVc != self.mainViewController) {
-        self.mainViewController = mainVc;
-        [self.mainViewController.view addGestureRecognizer:self.mainViewGesture];
-    }
-    
-    if (drawerVc && drawerVc != self.mainViewController) {
-        self.drawerViewController = drawerVc;
-        [self.drawerViewController.view addGestureRecognizer:self.drawerViewGesture];
-    }
-    
-    if (targetVc && targetVc != self.targetViewController) {
-        self.targetViewController = targetVc;
-    }
+    [self.targetViewController.view addGestureRecognizer:self.mainViewGesture];
+    [self.drawerViewController.view addGestureRecognizer:self.drawerViewGesture];
 }
 
 #pragma mark - UIViewControllerAnimatedTransitioning -
 
-- (void)mainViewGestureHandler:(UIPanGestureRecognizer*)recognizer
+- (void)drawerViewGestureHandler:(UIScreenEdgePanGestureRecognizer*)recognizer
 {
+    if (self.isPresentedDrawer == NO) return;
+    
+    static CGPoint gLocation;
+    static CGFloat gContainerWidth;
+    
     CGPoint location = [recognizer locationInView:[self.drawerViewController.view window]];
     CGPoint velocity = [recognizer velocityInView:[self.drawerViewController.view window]];
 
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
         {
+            gContainerWidth = CGRectGetWidth(self.drawerViewController.view.bounds);
+            gLocation = [recognizer locationInView:[self.drawerViewController.view window]];
+            
             [self dismissDrawerViewController];
         }
             break;
             
         case UIGestureRecognizerStateChanged:
         {
-            
+            CGFloat distance = MAX(0, gLocation.x - location.x);
+            CGFloat animationRatio = distance/gContainerWidth;
+            [self updateInteractiveTransition:animationRatio];
         }
             break;
             
         case UIGestureRecognizerStateEnded:
         {
-            
+            if (velocity.x < 0) {
+                [self finishInteractiveTransition];
+            } else {
+                [self cancelInteractiveTransition];
+            }
         }
             break;
             
@@ -98,10 +93,13 @@
     }
 }
 
-- (void)drawerViewGestureHandler:(UIScreenEdgePanGestureRecognizer*)recognizer{
+
+- (void)mainViewGestureHandler:(UIPanGestureRecognizer*)recognizer
+{
+    if (self.isPresentedDrawer == YES) return;
     
-    CGPoint location = [recognizer locationInView:[self.mainViewController.view window]];
-    CGPoint velocity = [recognizer velocityInView:[self.mainViewController.view window]];
+    CGPoint location = [recognizer locationInView:[self.targetViewController.view window]];
+    CGPoint velocity = [recognizer velocityInView:[self.targetViewController.view window]];
     
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
@@ -112,8 +110,7 @@
             
         case UIGestureRecognizerStateChanged:
         {
-            CGFloat animationRatio = location.x / CGRectGetWidth([self.mainViewController.view window].bounds);
-            NSLog(@"animationRatio : %f", location.x);
+            CGFloat animationRatio = location.x / CGRectGetWidth([self.targetViewController.view window].bounds);
             [self updateInteractiveTransition:animationRatio];
         }
             break;
@@ -133,129 +130,92 @@
     }
 }
 
-//Define the transition duration
--(NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext{
-    return 1.0;
+- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext{
+    
+    if (self.isPresentedDrawer == YES) {
+        return .4;
+    } else {
+        return 1.0;
+    }
 }
 
-
-//Define the transition
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-//    //STEP 1
-//    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-//    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-//    CGRect sourceRect = [transitionContext initialFrameForViewController:fromVC];
-//    
-//    /*STEP 2:   Draw different transitions depending on the view to show
-//     for sake of clarity this code is divided in two different blocks
-//     */
-//    
-//    //STEP 2A: From the First View(INITIAL) -> to the Second View(MODAL)
-//    if(self.transitionTo == MODAL){
-//        
-//        //1.Settings for the fromVC ............................
-//        CGAffineTransform rotation;
-//        rotation = CGAffineTransformMakeRotation(M_PI);
-//        fromVC.view.frame = sourceRect;
-//        fromVC.view.layer.anchorPoint = CGPointMake(0.5, 0.0);
-//        fromVC.view.layer.position = CGPointMake(160.0, 0);
-//        
-//        //2.Insert the toVC view...........................
-//        UIView *container = [transitionContext containerView];
-//        [container insertSubview:toVC.view belowSubview:fromVC.view];
-//        CGPoint final_toVC_Center = toVC.view.center;
-//        
-//        [container addSubview:fromVC.view];
-//        
-//        toVC.view.center = CGPointMake(-sourceRect.size.width, sourceRect.size.height);
-//        toVC.view.transform = CGAffineTransformMakeRotation(M_PI/2);
-//        
-//        //3.Perform the animation...............................
-//        [UIView animateWithDuration:1.0
-//                         animations:^{
-//                             
-//                             //Setup the final parameters of the 2 views
-//                             //the animation interpolates from the current parameters
-//                             //to the next values.
-//                             fromVC.view.transform = rotation;
-//                             toVC.view.center = final_toVC_Center;
-//                             toVC.view.transform = CGAffineTransformMakeRotation(0);
-//                         } completion:^(BOOL finished) {
-//                             
-//                             //When the animation is completed call completeTransition
-//                             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-//                             
-//                         }];
-//    }
-//    
-//    //STEP 2B: From the Second view(MODAL) -> to the First View(INITIAL)
-//    else{
-//        
-//        //Settings for the fromVC ............................
-//        CGAffineTransform rotation;
-//        rotation = CGAffineTransformMakeRotation(M_PI);
-//        UIView *container = [transitionContext containerView];
-//        fromVC.view.frame = sourceRect;
-//        fromVC.view.layer.anchorPoint = CGPointMake(0.5, 0.0);
-//        fromVC.view.layer.position = CGPointMake(160.0, 0);
-//        
-//        //Insert the toVC view view...........................
-//        [container insertSubview:toVC.view belowSubview:fromVC.view];
-//        toVC.view.layer.anchorPoint = CGPointMake(0.5, 0.0);
-//        toVC.view.layer.position = CGPointMake(160.0, 0);
-//        toVC.view.transform = CGAffineTransformMakeRotation(-M_PI);
-//        
-//        //Perform the animation...............................
-//        [UIView animateWithDuration:1.0
-//                              delay:0.0
-//             usingSpringWithDamping:0.8
-//              initialSpringVelocity:6.0
-//                            options:UIViewAnimationOptionCurveEaseIn
-//         
-//                         animations:^{
-//                             
-//                             //Setup the final parameters of the 2 views
-//                             //the animation interpolates from the current parameters
-//                             //to the next values.
-//                             fromVC.view.center = CGPointMake(fromVC.view.center.x - 320, fromVC.view.center.y);
-//                             toVC.view.transform = CGAffineTransformMakeRotation(-0);
-//                             
-//                         } completion:^(BOOL finished) {
-//                             
-//                             //When the animation is completed call completeTransition
-//                             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-//                             
-//                             // release the modal controller
-////                             self.modalController = nil;
-//                             
-//                         }];
-//    }
-//    
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    CGRect sourceRect = [transitionContext initialFrameForViewController:fromVC];
+    UIView *container = [transitionContext containerView];
     
+    if(self.isPresentedDrawer == NO){
+        
+        [container addSubview:toVC.view];
+    
+        CGRect toVCRect = sourceRect;
+        toVCRect.origin.x = -toVCRect.size.width;
+        toVCRect.origin.y = 0;
+        toVCRect.size.width = sourceRect.size.width * 0.8;
+        toVC.view.frame = toVCRect;
+        
+        [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                         animations:^{
+                             
+                             CGRect toVCRect = toVC.view.frame;
+                             toVCRect.origin.x = 0;
+                             toVC.view.frame = toVCRect;
+                             
+                         } completion:^(BOOL finished) {
+                             
+                             BOOL isCanceled = [transitionContext transitionWasCancelled];
+                             toVC.modalPresentationStyle = UIModalPresentationCustom;
+                             [transitionContext completeTransition:!isCanceled];
+                             
+                         }];
+    }
+    
+    else{
+
+        [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                         animations:^{
+                             
+                             CGRect fromVCRect = fromVC.view.frame;
+                             fromVCRect.origin.x = -fromVCRect.size.width;
+                             fromVC.view.frame = fromVCRect;
+                             [container bringSubviewToFront:toVC.view];
+                             
+                         } completion:^(BOOL finished) {
+                             
+                             BOOL isCanceled = [transitionContext transitionWasCancelled];
+                             toVC.modalPresentationStyle = UIModalPresentationCustom;
+                             [transitionContext completeTransition:!isCanceled];
+
+                         }];
+    }
+    
+    
+}
+
+- (BOOL)isPresentedDrawer
+{
+    if (self.currentViewController == nil) {
+        return NO;
+    }
+    
+    if (self.currentViewController == self.targetViewController) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 
 #pragma mark - private methods
 
-- (void)setCurrentViewController:(UIViewController *)currentViewController
-{
-    if (_currentViewController != currentViewController) {
-        
-        _currentViewController = currentViewController;
-        
-        if (self.delegate && [self.delegate respondsToSelector:@selector(drawerTransitionWithCurrentViewController:)] == YES) {
-            [self.delegate drawerTransitionWithCurrentViewController:self.currentViewController];
-        }
-    }
-}
-
 - (void)presentDrawerViewController
 {
-    if (self.currentViewController == self.drawerViewController) return;
-    
-    if (self.targetViewController && self.mainViewController && self.drawerViewController) {
-
+    if (self.targetViewController && self.drawerViewController) {
+        self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+        self.drawerViewController.transitioningDelegate = self;
+        
         [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:^{
             self.currentViewController = self.drawerViewController;
         }];
@@ -264,17 +224,13 @@
 
 - (void)dismissDrawerViewController
 {
-    if (self.currentViewController == self.drawerViewController) return;
-    
-    if (self.targetViewController && self.mainViewController && self.drawerViewController) {
+    if (self.targetViewController && self.drawerViewController) {
         
-        [self.targetViewController dismissViewControllerAnimated:YES completion:^{
-            self.currentViewController = self.mainViewController;
+        [self.drawerViewController dismissViewControllerAnimated:YES completion:^{
+            self.currentViewController = self.targetViewController;
         }];
     }
 }
-
-
 
 #pragma mark - UIVieControllerTransitioningDelegate -
 
@@ -282,13 +238,11 @@
                                                                    presentingController:(UIViewController *)presenting
                                                                        sourceController:(UIViewController *)source
 {
-    self.transitionType = PGDrawerTransitionTypeDrawer;
     return self;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    self.transitionType = PGDrawerTransitionTypeMain;
     return self;
 }
 
@@ -297,10 +251,9 @@
     return self;
 }
 
-- (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator{
-    return nil;
+- (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator
+{
+    return self;
 }
-
-
 
 @end

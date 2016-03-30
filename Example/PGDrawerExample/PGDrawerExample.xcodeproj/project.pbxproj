@@ -11,9 +11,9 @@
 		1800D4741CA1332100D150EE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1800D4731CA1332100D150EE /* AppDelegate.m */; };
 		1800D47C1CA1332200D150EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1800D47B1CA1332200D150EE /* Assets.xcassets */; };
 		1800D47F1CA1332200D150EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1800D47D1CA1332200D150EE /* LaunchScreen.storyboard */; };
-		1800D4881CA137F100D150EE /* PGDrawerViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1800D4871CA137F100D150EE /* PGDrawerViewContainer.m */; };
 		180730091CA27AF200E760AD /* PGDrawerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 180730081CA27AF200E760AD /* PGDrawerTransition.m */; };
 		180AEA011CAA7E590024FF2D /* ExamCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */; };
+		180AEA041CAB6AB00024FF2D /* ExamDrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,12 +24,12 @@
 		1800D47B1CA1332200D150EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1800D47E1CA1332200D150EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1800D4801CA1332200D150EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1800D4861CA137F100D150EE /* PGDrawerViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGDrawerViewContainer.h; sourceTree = "<group>"; };
-		1800D4871CA137F100D150EE /* PGDrawerViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGDrawerViewContainer.m; sourceTree = "<group>"; };
 		180730071CA27AF200E760AD /* PGDrawerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGDrawerTransition.h; sourceTree = "<group>"; };
 		180730081CA27AF200E760AD /* PGDrawerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGDrawerTransition.m; sourceTree = "<group>"; };
 		180AE9FF1CAA7E590024FF2D /* ExamCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamCenterViewController.h; sourceTree = "<group>"; };
 		180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamCenterViewController.m; sourceTree = "<group>"; };
+		180AEA021CAB6AB00024FF2D /* ExamDrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamDrawerViewController.h; sourceTree = "<group>"; };
+		180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamDrawerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +66,8 @@
 				1800D4731CA1332100D150EE /* AppDelegate.m */,
 				180AE9FF1CAA7E590024FF2D /* ExamCenterViewController.h */,
 				180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */,
-				1800D4861CA137F100D150EE /* PGDrawerViewContainer.h */,
-				1800D4871CA137F100D150EE /* PGDrawerViewContainer.m */,
+				180AEA021CAB6AB00024FF2D /* ExamDrawerViewController.h */,
+				180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */,
 				180730071CA27AF200E760AD /* PGDrawerTransition.h */,
 				180730081CA27AF200E760AD /* PGDrawerTransition.m */,
 				1800D47B1CA1332200D150EE /* Assets.xcassets */,
@@ -157,8 +157,8 @@
 			files = (
 				180AEA011CAA7E590024FF2D /* ExamCenterViewController.m in Sources */,
 				180730091CA27AF200E760AD /* PGDrawerTransition.m in Sources */,
-				1800D4881CA137F100D150EE /* PGDrawerViewContainer.m in Sources */,
 				1800D4741CA1332100D150EE /* AppDelegate.m in Sources */,
+				180AEA041CAB6AB00024FF2D /* ExamDrawerViewController.m in Sources */,
 				1800D4711CA1332100D150EE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

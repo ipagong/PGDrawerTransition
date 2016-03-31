@@ -82,8 +82,10 @@
         {
             if (velocity.x < 0) {
                 [self finishInteractiveTransition];
+                self.currentViewController = self.targetViewController;
             } else {
                 [self cancelInteractiveTransition];
+                self.currentViewController = self.drawerViewController;
             }
         }
             break;
@@ -119,8 +121,10 @@
         {
             if (velocity.x > 0) {
                 [self finishInteractiveTransition];
+                self.currentViewController = self.drawerViewController;
             } else {
                 [self cancelInteractiveTransition];
+                self.currentViewController = self.targetViewController;
             }
         }
             break;
@@ -214,10 +218,10 @@
 {
     if (self.targetViewController && self.drawerViewController) {
         self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
-        self.drawerViewController.transitioningDelegate = self;
+        self.drawerViewController.transitioningDelegate  = self;
         
         [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:^{
-            self.currentViewController = self.drawerViewController;
+
         }];
     }
 }

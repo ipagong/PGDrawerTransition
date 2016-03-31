@@ -66,7 +66,7 @@
             gContainerWidth = CGRectGetWidth(self.drawerViewController.view.bounds);
             gLocation = [recognizer locationInView:[self.drawerViewController.view window]];
             
-            [self dismissDrawerViewController];
+            [self dismissDrawer];
         }
             break;
             
@@ -106,7 +106,7 @@
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
         {
-            [self presentDrawerViewController];
+            [self presentDrawer];
         }
             break;
             
@@ -214,6 +214,26 @@
 
 #pragma mark - private methods
 
+- (void)presentDrawer
+{
+    if (self.targetViewController && self.drawerViewController) {
+        self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+        self.drawerViewController.transitioningDelegate  = self;
+        
+        [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:^{
+        }];
+    }
+}
+
+- (void)dismissDrawer
+{
+    if (self.targetViewController && self.drawerViewController) {
+        
+        [self.drawerViewController dismissViewControllerAnimated:YES completion:^{
+        }];
+    }
+}
+
 - (void)presentDrawerViewController
 {
     if (self.targetViewController && self.drawerViewController) {
@@ -221,8 +241,9 @@
         self.drawerViewController.transitioningDelegate  = self;
         
         [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:^{
-
+            self.currentViewController = self.drawerViewController;
         }];
+        [self finishInteractiveTransition];
     }
 }
 
@@ -233,6 +254,7 @@
         [self.drawerViewController dismissViewControllerAnimated:YES completion:^{
             self.currentViewController = self.targetViewController;
         }];
+        [self finishInteractiveTransition];
     }
 }
 

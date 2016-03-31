@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-//typedef void(^PGDrawerInteractionBlock)(void);
+typedef void(^PGDrawerInteractionBlock)(void);
 
 @interface PGDrawerTransition : UIPercentDrivenInteractiveTransition
 <UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate>
-//
-//@property (nonatomic, copy) PGDrawerInteractionBlock presentBlock;
-//@property (nonatomic, copy) PGDrawerInteractionBlock dismissBlock;
+
+@property (nonatomic, copy) PGDrawerInteractionBlock presentBlock;
+@property (nonatomic, copy) PGDrawerInteractionBlock dismissBlock;
 
 - (instancetype)initWithTargetViewController:(UIViewController *)targetViewController drawerViewController:(UIViewController *)drawerViewController;
 

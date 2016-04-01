@@ -21,4 +21,8 @@ typedef void(^PGDrawerInteractionBlock)(void);
 - (void)presentDrawerViewController;
 - (void)dismissDrawerViewController;
 
+@property (nonatomic, assign) BOOL hasDismissView;
+@property (nonatomic, assign) CGFloat dismissViewAlpha;
+@property (nonatomic, assign) CGFloat drawerWidth;
+
 @end

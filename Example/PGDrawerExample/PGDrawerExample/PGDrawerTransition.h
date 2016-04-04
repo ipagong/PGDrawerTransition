@@ -25,4 +25,7 @@ typedef void(^PGDrawerInteractionBlock)(void);
 @property (nonatomic, assign) CGFloat dismissViewAlpha;
 @property (nonatomic, assign) CGFloat drawerWidth;
 
+@property (nonatomic, assign) NSTimeInterval presentDuration;
+@property (nonatomic, assign) NSTimeInterval dismissDuration;
+
 @end

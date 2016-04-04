@@ -37,6 +37,9 @@
         self.dismissViewAlpha = 0.6;
         self.hasDismissView = YES;
         
+        self.dismissDuration = .4;
+        self.presentDuration = .6;
+        
         [self setupGesture];
     }
     return self;
@@ -151,9 +154,9 @@
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext{
     
     if (self.isPresentedDrawer == YES) {
-        return .4;
+        return self.dismissDuration;
     } else {
-        return 0.6;
+        return self.presentDuration;
     }
 }
 
@@ -239,15 +242,18 @@
 
 - (void)addDismissViewWithContainer:(UIView *)container
 {
-    if (self.dismissButton == nil && self.hasDismissView == YES) {
-        self.dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.dismissButton setBackgroundColor:[UIColor blackColor]];
-        [self.dismissButton setAlpha:0];
-        [self.dismissButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
-        [self.dismissButton setFrame:CGRectMake(0, 0, container.frame.size.width, container.frame.size.height)];
-        [container addSubview:self.dismissButton];
-        [container sendSubviewToBack:self.dismissButton];
-    }
+    if (self.hasDismissView == NO) return;
+    
+    if (self.dismissButton) return;
+        
+    self.dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.dismissButton setBackgroundColor:[UIColor blackColor]];
+    [self.dismissButton setAlpha:0];
+    [self.dismissButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
+    [self.dismissButton setFrame:CGRectMake(0, 0, container.frame.size.width, container.frame.size.height)];
+
+    [container addSubview:self.dismissButton];
+    [container sendSubviewToBack:self.dismissButton];
 }
 
 - (void)removeDismissView {

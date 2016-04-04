@@ -13,7 +13,7 @@
 		1800D47F1CA1332200D150EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1800D47D1CA1332200D150EE /* LaunchScreen.storyboard */; };
 		180AEA011CAA7E590024FF2D /* ExamCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */; };
 		180AEA041CAB6AB00024FF2D /* ExamDrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */; };
-		1832075B1CB26D890075637D /* PGDrawerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1832075A1CB26D890075637D /* PGDrawerTransition.m */; };
+		1832075E1CB270D80075637D /* PGDrawerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1832075D1CB270D80075637D /* PGDrawerTransition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +28,8 @@
 		180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamCenterViewController.m; sourceTree = "<group>"; };
 		180AEA021CAB6AB00024FF2D /* ExamDrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamDrawerViewController.h; sourceTree = "<group>"; };
 		180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamDrawerViewController.m; sourceTree = "<group>"; };
-		183207591CB26D890075637D /* PGDrawerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGDrawerTransition.h; path = Pod/Classes/PGDrawerTransition.h; sourceTree = "<group>"; };
-		1832075A1CB26D890075637D /* PGDrawerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGDrawerTransition.m; path = Pod/Classes/PGDrawerTransition.m; sourceTree = "<group>"; };
+		1832075C1CB270D80075637D /* PGDrawerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGDrawerTransition.h; path = ../PGDrawerViewController/Pod/Classes/PGDrawerTransition.h; sourceTree = "<group>"; };
+		1832075D1CB270D80075637D /* PGDrawerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGDrawerTransition.m; path = ../PGDrawerViewController/Pod/Classes/PGDrawerTransition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,8 +88,8 @@
 		183207551CB246190075637D /* PGDrawerTransition */ = {
 			isa = PBXGroup;
 			children = (
-				183207591CB26D890075637D /* PGDrawerTransition.h */,
-				1832075A1CB26D890075637D /* PGDrawerTransition.m */,
+				1832075C1CB270D80075637D /* PGDrawerTransition.h */,
+				1832075D1CB270D80075637D /* PGDrawerTransition.m */,
 			);
 			name = PGDrawerTransition;
 			path = ../../PGDrawerTransition;
@@ -167,7 +167,7 @@
 				180AEA011CAA7E590024FF2D /* ExamCenterViewController.m in Sources */,
 				1800D4741CA1332100D150EE /* AppDelegate.m in Sources */,
 				180AEA041CAB6AB00024FF2D /* ExamDrawerViewController.m in Sources */,
-				1832075B1CB26D890075637D /* PGDrawerTransition.m in Sources */,
+				1832075E1CB270D80075637D /* PGDrawerTransition.m in Sources */,
 				1800D4711CA1332100D150EE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

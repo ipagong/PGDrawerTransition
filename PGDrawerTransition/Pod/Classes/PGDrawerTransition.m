@@ -1,6 +1,6 @@
 //
-//  DrawerInteractiveTransition.m
-//  PGDrawerExample
+//  PGDrawerTransition.m
+//  PGDrawerTransition
 //
 //  Created by suwan on 2016. 3. 23..
 //  Copyright © 2016년 suwan. All rights reserved.

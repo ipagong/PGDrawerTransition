@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "302D37256F19337E9F501C2B9C4BBEF90D46F9C9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "35437E58CEA477B442667A45CA0DAAF68B67C7AD" : 0,
+    "302D37256F19337E9F501C2B9C4BBEF90D46F9C9" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "32F445C8-07EF-4BDA-BEB7-BE2E2D2980C8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "35437E58CEA477B442667A45CA0DAAF68B67C7AD" : "PGDrawerViewController\/PGDrawerTransition\/",
+    "302D37256F19337E9F501C2B9C4BBEF90D46F9C9" : "PGDrawerViewController\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "PGDrawerExample",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/PGDrawerExample\/PGDrawerExample.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ipagong\/PGDrawerViewController.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "302D37256F19337E9F501C2B9C4BBEF90D46F9C9"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/CocoaPods\/pod-template.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "35437E58CEA477B442667A45CA0DAAF68B67C7AD"
+    }
+  ]
+}

@@ -1,8 +1,10 @@
-# DrawerViewController
+# Drawer View Transition.
 
-LeftDrawable Container View Controller (Objective-C)
+Drawer View Transition (Objective-C)
+
+just implements 'UIPercentDrivenInteractiveTransition' protocol.
 
 ## Author
 
-pagong, ipagong.dev@gmail.com
+suwan.park, ipagong.dev@gmail.com
 

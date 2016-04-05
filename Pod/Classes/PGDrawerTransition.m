@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *mainViewGesture;
 @property (nonatomic, strong) UIPanGestureRecognizer *drawerViewGesture;
+
+@property (nonatomic, strong) UIView *dismissBG;
 @property (nonatomic, strong) UIButton *dismissButton;
 
 @property (nonatomic, readonly) BOOL isPresentedDrawer;
@@ -54,7 +56,7 @@
     self.drawerViewGesture.delegate = self;
     
     [self.targetViewController.view addGestureRecognizer:self.mainViewGesture];
-
+    
     [self.drawerViewController.view addGestureRecognizer:self.drawerViewGesture];
 }
 
@@ -69,7 +71,7 @@
     
     CGPoint location = [recognizer locationInView:[self.drawerViewController.view window]];
     CGPoint velocity = [recognizer velocityInView:[self.drawerViewController.view window]];
-
+    
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
         {
@@ -181,11 +183,11 @@
         toVCRect.origin.y = 0;
         toVC.view.frame = toVCRect;
         
-        [self addDismissView];
+        [self addDismissViewWithTargetViewController:fromVC container:container];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                          animations:^{
-                             [self.dismissButton setAlpha:self.dismissViewAlpha];
+                             [self.dismissBG setAlpha:self.dismissViewAlpha];
                              CGRect toVCRect = toVC.view.frame;
                              toVCRect.origin.x = 0;
                              toVC.view.frame = toVCRect;
@@ -220,17 +222,17 @@
                              fromVCRect.origin.x = -fromVCRect.size.width;
                              fromVC.view.frame = fromVCRect;
                              [container bringSubviewToFront:toVC.view];
-                             [self.dismissButton setAlpha:0];
+                             [self.dismissBG setAlpha:0];
                              
                          } completion:^(BOOL finished) {
                              
                              BOOL isCanceled = [transitionContext transitionWasCancelled];
                              toVC.modalPresentationStyle = UIModalPresentationCustom;
-
+                             
                              if (isCanceled == YES) {
                                  self.currentViewController = self.drawerViewController;
                                  [transitionContext completeTransition:NO];
-                                 [self addDismissView];
+                                 [self addDismissViewWithTargetViewController:toVC container:container];
                              } else {
                                  self.currentViewController = self.targetViewController;
                                  [transitionContext completeTransition:YES];
@@ -241,36 +243,45 @@
                              }
                          }];
     }
-
+    
 }
 
-- (void)addDismissView
+- (void)addDismissViewWithTargetViewController:(UIViewController *)targetViewController container:(UIView *)container
 {
     if (self.hasDismissView == NO) return;
     
     if (self.targetViewController == nil) return;
     
     if (self.dismissButton) return;
-
+    
     self.dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.dismissButton setBackgroundColor:[UIColor blackColor]];
-    [self.dismissButton setAlpha:0];
+    [self.dismissButton setBackgroundColor:[UIColor clearColor]];
     [self.dismissButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
     [self.dismissButton setFrame:CGRectMake(0, 0,
-                                            [self.targetViewController.view window].frame.size.width,
-                                            [self.targetViewController.view window].frame.size.height)];
+                                            [container window].frame.size.width,
+                                            [container window].frame.size.height)];
     
-    if (self.targetViewController.navigationController) {
-        [self.targetViewController.navigationController.view addSubview:self.dismissButton];
+    self.dismissBG = [[UIView alloc] initWithFrame:self.dismissButton.frame];
+    [self.dismissBG setBackgroundColor:[UIColor blackColor]];
+    [self.dismissBG setAlpha:0];
+    
+    if (targetViewController.navigationController) {
+        [targetViewController.navigationController.view addSubview:self.dismissButton];
     } else {
-        [self.targetViewController.view addSubview:self.dismissButton];
+        [targetViewController.view addSubview:self.dismissButton];
     }
+    
+    [container addSubview:self.dismissBG];
+    [container sendSubviewToBack:self.dismissBG];
 }
 
 - (void)removeDismissView {
     if (self.dismissButton) {
         [self.dismissButton removeFromSuperview];
         self.dismissButton = nil;
+        
+        [self.dismissBG removeFromSuperview];
+        self.dismissBG = nil;
     }
 }
 

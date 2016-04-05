@@ -171,14 +171,17 @@
     if(self.isPresentedDrawer == NO){
         
         [container addSubview:toVC.view];
-    
+        
+        sourceRect.size.width = (self.drawerWidth == NSNotFound ? sourceRect.size.width * 0.8 : self.drawerWidth);
+        
+        container.frame = sourceRect;
+        
         CGRect toVCRect = sourceRect;
         toVCRect.origin.x = -toVCRect.size.width;
         toVCRect.origin.y = 0;
-        toVCRect.size.width = (self.drawerWidth == NSNotFound ? sourceRect.size.width * 0.8 : self.drawerWidth);
         toVC.view.frame = toVCRect;
         
-        [self addDismissViewWithContainer:container];
+        [self addDismissView];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                          animations:^{
@@ -227,7 +230,7 @@
                              if (isCanceled == YES) {
                                  self.currentViewController = self.drawerViewController;
                                  [transitionContext completeTransition:NO];
-                                 [self addDismissViewWithContainer:container];
+                                 [self addDismissView];
                              } else {
                                  self.currentViewController = self.targetViewController;
                                  [transitionContext completeTransition:YES];
@@ -241,20 +244,27 @@
 
 }
 
-- (void)addDismissViewWithContainer:(UIView *)container
+- (void)addDismissView
 {
     if (self.hasDismissView == NO) return;
     
+    if (self.targetViewController == nil) return;
+    
     if (self.dismissButton) return;
-        
+
     self.dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.dismissButton setBackgroundColor:[UIColor blackColor]];
     [self.dismissButton setAlpha:0];
     [self.dismissButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
-    [self.dismissButton setFrame:CGRectMake(0, 0, container.frame.size.width, container.frame.size.height)];
-
-    [container addSubview:self.dismissButton];
-    [container sendSubviewToBack:self.dismissButton];
+    [self.dismissButton setFrame:CGRectMake(0, 0,
+                                            [self.targetViewController.view window].frame.size.width,
+                                            [self.targetViewController.view window].frame.size.height)];
+    
+    if (self.targetViewController.navigationController) {
+        [self.targetViewController.navigationController.view addSubview:self.dismissButton];
+    } else {
+        [self.targetViewController.view addSubview:self.dismissButton];
+    }
 }
 
 - (void)removeDismissView {

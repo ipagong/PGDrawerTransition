@@ -8,7 +8,7 @@
 
 #import "PGDrawerTransition.h"
 
-@interface PGDrawerTransition ()
+@interface PGDrawerTransition () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) UIViewController *targetViewController;
 @property (nonatomic, weak) UIViewController *drawerViewController;
@@ -51,6 +51,7 @@
     self.mainViewGesture.edges = UIRectEdgeLeft;
     
     self.drawerViewGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(drawerViewGestureHandler:)];
+    self.drawerViewGesture.delegate = self;
     
     [self.targetViewController.view addGestureRecognizer:self.mainViewGesture];
 
@@ -339,6 +340,14 @@
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator
 {
     return self;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    CGPoint velocity = [panGestureRecognizer velocityInView:self.drawerViewController.view];
+    return fabs(velocity.x) > fabs(velocity.y);
 }
 
 @end

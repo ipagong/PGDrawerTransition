@@ -318,12 +318,12 @@
 
 - (void)presentDrawerViewController
 {
-    [self presentDrawerViewControllerWithAnimated:NO];
+    [self presentDrawerViewControllerWithAnimated:YES];
 }
 
 - (void)dismissDrawerViewController
 {
-    [self dismissDrawerViewControllerWithAnimated:NO];
+    [self dismissDrawerViewControllerWithAnimated:YES];
 }
 
 - (void)presentDrawerViewControllerWithAnimated:(BOOL)animated

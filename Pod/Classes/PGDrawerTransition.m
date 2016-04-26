@@ -10,9 +10,6 @@
 
 @interface PGDrawerTransition () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, weak) UIViewController *targetViewController;
-@property (nonatomic, weak) UIViewController *drawerViewController;
-
 @property (nonatomic, weak) UIViewController *currentViewController;
 
 @property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *mainViewGesture;
@@ -321,20 +318,30 @@
 
 - (void)presentDrawerViewController
 {
-    if (self.targetViewController && self.drawerViewController) {
-        self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
-        self.drawerViewController.transitioningDelegate  = self;
-        
-        [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:nil];
-        [self finishInteractiveTransition];
-    }
+    [self presentDrawerViewControllerWithAnimated:NO];
 }
 
 - (void)dismissDrawerViewController
 {
+    [self dismissDrawerViewControllerWithAnimated:NO];
+}
+
+- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated
+{
+    if (self.targetViewController && self.drawerViewController) {
+        self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+        self.drawerViewController.transitioningDelegate  = self;
+        
+        [self.targetViewController presentViewController:self.drawerViewController animated:animated completion:nil];
+        [self finishInteractiveTransition];
+    }
+}
+
+- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated
+{
     if (self.targetViewController && self.drawerViewController) {
         
-        [self.drawerViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.drawerViewController dismissViewControllerAnimated:animated completion:nil];
         [self finishInteractiveTransition];
     }
 }

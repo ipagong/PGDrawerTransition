@@ -20,6 +20,8 @@ typedef void(^PGDrawerInteractionBlock)(void);
 
 - (void)presentDrawerViewController;
 - (void)dismissDrawerViewController;
+- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated;
+- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated;
 
 @property (nonatomic, assign) BOOL hasDismissView;
 @property (nonatomic, assign) CGFloat dismissViewAlpha;
@@ -27,5 +29,8 @@ typedef void(^PGDrawerInteractionBlock)(void);
 
 @property (nonatomic, assign) NSTimeInterval presentDuration;
 @property (nonatomic, assign) NSTimeInterval dismissDuration;
+
+@property (nonatomic, weak) UIViewController *targetViewController;
+@property (nonatomic, weak) UIViewController *drawerViewController;
 
 @end

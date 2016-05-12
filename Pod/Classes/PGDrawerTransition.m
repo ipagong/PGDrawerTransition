@@ -358,15 +358,15 @@
 
 - (void)presentDrawerViewController
 {
-    [self presentDrawerViewControllerWithAnimated:YES];
+    [self presentDrawerViewControllerWithAnimated:YES completion:nil];
 }
 
 - (void)dismissDrawerViewController
 {
-    [self dismissDrawerViewControllerWithAnimated:YES];
+    [self dismissDrawerViewControllerWithAnimated:YES completion:nil];
 }
 
-- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated
+- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion
 {
     if (self.enablePresent == NO) return;
     
@@ -383,7 +383,7 @@
     });
 }
 
-- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated
+- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion
 {
     if (self.enableDismiss == NO) return;
     

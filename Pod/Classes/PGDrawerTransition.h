@@ -20,8 +20,8 @@ typedef void(^PGDrawerInteractionBlock)(void);
 
 - (void)presentDrawerViewController;
 - (void)dismissDrawerViewController;
-- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated;
-- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated;
+- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion;
 
 @property (nonatomic, assign) BOOL enablePresent;
 @property (nonatomic, assign) BOOL enableDismiss;

@@ -35,6 +35,9 @@
         self.drawerWidth = NSNotFound;
         self.dismissViewAlpha = 0.6;
         self.hasDismissView = YES;
+
+        self.enablePresent  = YES;
+        self.enableDismiss  = YES;
         
         self.dismissDuration = .4;
         self.presentDuration = .6;
@@ -61,6 +64,8 @@
 
 - (void)drawerViewGestureHandler:(UIScreenEdgePanGestureRecognizer*)recognizer
 {
+    if (self.enableDismiss == NO) return;
+    
     if (self.isPresentedDrawer == NO) return;
     
     static CGPoint gLocation;
@@ -107,6 +112,8 @@
 
 - (void)mainViewGestureHandler:(UIPanGestureRecognizer*)recognizer
 {
+    if (self.enablePresent == NO) return;
+    
     if (self.isPresentedDrawer == YES) return;
     
     CGPoint location = [recognizer locationInView:[self.targetViewController.view window]];
@@ -162,25 +169,25 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    CGRect sourceRect = [transitionContext initialFrameForViewController:fromVC];
-    UIView *container = [transitionContext containerView];
-    
     if(self.isPresentedDrawer == NO){
+        
+        UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+        UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        UIView *container = [transitionContext containerView];
         
         [container addSubview:toVC.view];
         
+        CGRect sourceRect = CGRectMake(0, 0, CGRectGetWidth(fromVC.view.window.frame), CGRectGetHeight(fromVC.view.window.frame));
         sourceRect.size.width = (self.drawerWidth == NSNotFound ? sourceRect.size.width * 0.8 : self.drawerWidth);
         
-        container.frame = sourceRect;
+        container.frame = fromVC.view.frame;
         
         CGRect toVCRect = sourceRect;
         toVCRect.origin.x = -toVCRect.size.width;
         toVCRect.origin.y = 0;
         toVC.view.frame = toVCRect;
         
-        [self addDismissViewWithTargetViewController:fromVC container:container];
+        [self addDismissViewWithTargetViewController:fromVC drawerViewController:toVC containerView:container];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                          animations:^{
@@ -212,16 +219,27 @@
     
     else{
         
+        UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+        UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        UIView *container = [transitionContext containerView];
+        CGRect fromVCRect = fromVC.view.frame;
+        
+        fromVC.view.frame = fromVCRect;
+        [self.dismissBG setAlpha:self.dismissViewAlpha];
+        
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              
                              CGRect fromVCRect = fromVC.view.frame;
                              fromVCRect.origin.x = -fromVCRect.size.width;
                              fromVC.view.frame = fromVCRect;
-                             [container bringSubviewToFront:toVC.view];
                              [self.dismissBG setAlpha:0];
                              
                          } completion:^(BOOL finished) {
+                             
+                             [container bringSubviewToFront:toVC.view];
                              
                              BOOL isCanceled = [transitionContext transitionWasCancelled];
                              toVC.modalPresentationStyle = UIModalPresentationCustom;
@@ -229,7 +247,7 @@
                              if (isCanceled == YES) {
                                  self.currentViewController = self.drawerViewController;
                                  [transitionContext completeTransition:NO];
-                                 [self addDismissViewWithTargetViewController:toVC container:container];
+                                 [self addDismissViewWithTargetViewController:toVC drawerViewController:fromVC containerView:container];
                              } else {
                                  self.currentViewController = self.targetViewController;
                                  [transitionContext completeTransition:YES];
@@ -243,42 +261,57 @@
     
 }
 
-- (void)addDismissViewWithTargetViewController:(UIViewController *)targetViewController container:(UIView *)container
+- (UIButton *)dismissButton
+{
+    if (_dismissButton == nil) {
+        _dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_dismissButton setBackgroundColor:[UIColor clearColor]];
+        [_dismissButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
+        [_dismissButton setFrame:CGRectMake(0, 0,
+                                            [self.targetViewController.view window].frame.size.width,
+                                            [self.targetViewController.view window].frame.size.height)];
+    }
+    return _dismissButton;
+}
+
+- (UIView *)dismissBG
+{
+    if (_dismissBG == nil) {
+        _dismissBG = [[UIView alloc] initWithFrame:CGRectZero];
+        [_dismissBG setBackgroundColor:[UIColor blackColor]];
+        [_dismissBG setAlpha:0];
+    }
+    return _dismissBG;
+}
+
+
+- (void)addDismissViewWithTargetViewController:(UIViewController *)targetViewController drawerViewController:(UIViewController *)drawerViewController containerView:(UIView *)containerView
 {
     if (self.hasDismissView == NO) return;
     
     if (self.targetViewController == nil) return;
     
-    if (self.dismissButton) return;
+    if (self.dismissButton.superview) return;
     
-    self.dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.dismissButton setBackgroundColor:[UIColor clearColor]];
-    [self.dismissButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
+    [self.dismissButton removeFromSuperview];
+    [self.dismissBG     removeFromSuperview];
+    
     [self.dismissButton setFrame:CGRectMake(0, 0,
-                                            [container window].frame.size.width,
-                                            [container window].frame.size.height)];
+                                            targetViewController.view.frame.size.width,
+                                            targetViewController.view.frame.size.height)];
+    [self.dismissBG setFrame:self.dismissButton.frame];
     
-    self.dismissBG = [[UIView alloc] initWithFrame:self.dismissButton.frame];
-    [self.dismissBG setBackgroundColor:[UIColor blackColor]];
-    [self.dismissBG setAlpha:0];
+    [containerView addSubview:self.dismissBG];
+    [containerView addSubview:self.dismissButton];
     
-    if (targetViewController.navigationController) {
-        [targetViewController.navigationController.view addSubview:self.dismissButton];
-    } else {
-        [targetViewController.view addSubview:self.dismissButton];
-    }
-    
-    [container addSubview:self.dismissBG];
-    [container sendSubviewToBack:self.dismissBG];
+    [containerView bringSubviewToFront:self.drawerViewController.view];
 }
 
-- (void)removeDismissView {
-    if (self.dismissButton) {
+- (void)removeDismissView
+{
+    if (self.dismissButton.superview) {
         [self.dismissButton removeFromSuperview];
-        self.dismissButton = nil;
-        
-        [self.dismissBG removeFromSuperview];
-        self.dismissBG = nil;
+        [self.dismissBG     removeFromSuperview];
     }
 }
 
@@ -300,20 +333,27 @@
 
 - (void)presentDrawer
 {
-    if (self.targetViewController && self.drawerViewController) {
-        self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
-        self.drawerViewController.transitioningDelegate  = self;
-        
-        [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:nil];
-    }
+    if (self.enablePresent == NO) return;
+    
+    if (self.targetViewController == nil || self.drawerViewController == nil) return;
+    
+    if (self.percentComplete != 0) return;
+    
+    self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    self.drawerViewController.transitioningDelegate  = self;
+    
+    [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:nil];
 }
 
 - (void)dismissDrawer
 {
-    if (self.targetViewController && self.drawerViewController) {
-        
-        [self.drawerViewController dismissViewControllerAnimated:YES completion:nil];
-    }
+    if (self.enableDismiss == NO) return;
+    
+    if (self.targetViewController == nil || self.drawerViewController == nil) return;
+    
+    if (self.percentComplete != 0) return;
+    
+    [self.drawerViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)presentDrawerViewController
@@ -328,22 +368,33 @@
 
 - (void)presentDrawerViewControllerWithAnimated:(BOOL)animated
 {
-    if (self.targetViewController && self.drawerViewController) {
-        self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
-        self.drawerViewController.transitioningDelegate  = self;
-        
-        [self.targetViewController presentViewController:self.drawerViewController animated:animated completion:nil];
+    if (self.enablePresent == NO) return;
+    
+    if (self.targetViewController == nil || self.drawerViewController == nil) return;
+    
+    if (self.percentComplete != 0) return;
+    
+    self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    self.drawerViewController.transitioningDelegate  = self;
+    
+    [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishInteractiveTransition];
-    }
+    });
 }
 
 - (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated
 {
-    if (self.targetViewController && self.drawerViewController) {
-        
-        [self.drawerViewController dismissViewControllerAnimated:animated completion:nil];
+    if (self.enableDismiss == NO) return;
+    
+    if (self.targetViewController == nil || self.drawerViewController == nil) return;
+    
+    if (self.percentComplete != 0) return;
+    
+    [self.drawerViewController dismissViewControllerAnimated:YES completion:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishInteractiveTransition];
-    }
+    });
 }
 
 #pragma mark - UIVieControllerTransitioningDelegate -

@@ -366,7 +366,7 @@
     [self dismissDrawerViewControllerWithAnimated:YES completion:nil];
 }
 
-- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion
+- (void)presentDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
     if (self.enablePresent == NO) return;
     
@@ -377,13 +377,13 @@
     self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
     self.drawerViewController.transitioningDelegate  = self;
     
-    [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:nil];
+    [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:completion];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishInteractiveTransition];
     });
 }
 
-- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion
+- (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
     if (self.enableDismiss == NO) return;
     
@@ -391,7 +391,7 @@
     
     if (self.percentComplete != 0) return;
     
-    [self.drawerViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.drawerViewController dismissViewControllerAnimated:YES completion:completion];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishInteractiveTransition];
     });

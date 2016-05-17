@@ -20,6 +20,8 @@
 
 @property (nonatomic, readonly) BOOL isPresentedDrawer;
 
+@property (nonatomic, assign) BOOL isAnimated;
+
 @end
 
 @implementation PGDrawerTransition
@@ -35,7 +37,7 @@
         self.drawerWidth = NSNotFound;
         self.dismissViewAlpha = 0.6;
         self.hasDismissView = YES;
-
+        
         self.enablePresent  = YES;
         self.enableDismiss  = YES;
         
@@ -64,6 +66,8 @@
 
 - (void)drawerViewGestureHandler:(UIScreenEdgePanGestureRecognizer*)recognizer
 {
+    if (self.isAnimated == YES) return;
+    
     if (self.enableDismiss == NO) return;
     
     if (self.isPresentedDrawer == NO) return;
@@ -94,6 +98,8 @@
             
         case UIGestureRecognizerStateEnded:
         {
+            self.isAnimated = YES;
+            
             if (velocity.x < 0) {
                 [self finishInteractiveTransition];
                 self.currentViewController = self.targetViewController;
@@ -112,6 +118,8 @@
 
 - (void)mainViewGestureHandler:(UIPanGestureRecognizer*)recognizer
 {
+    if (self.isAnimated == YES) return;
+    
     if (self.enablePresent == NO) return;
     
     if (self.isPresentedDrawer == YES) return;
@@ -135,6 +143,8 @@
             
         case UIGestureRecognizerStateEnded:
         {
+            self.isAnimated = YES;
+            
             if (velocity.x > 0) {
                 [self finishInteractiveTransition];
                 self.currentViewController = self.drawerViewController;
@@ -169,11 +179,12 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    if(self.isPresentedDrawer == NO){
-        
-        UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-        UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-        UIView *container = [transitionContext containerView];
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIView *container = [transitionContext containerView];
+    CGRect fromVCRect = fromVC.view.frame;
+    
+    if(toVC == self.drawerViewController){
         
         [container addSubview:toVC.view];
         
@@ -200,6 +211,8 @@
                              
                              BOOL isCanceled = [transitionContext transitionWasCancelled];
                              
+                             self.isAnimated = NO;
+                             
                              toVC.modalPresentationStyle = UIModalPresentationCustom;
                              if (isCanceled == YES) {
                                  self.currentViewController = self.targetViewController;
@@ -218,11 +231,6 @@
     }
     
     else{
-        
-        UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-        UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-        UIView *container = [transitionContext containerView];
-        CGRect fromVCRect = fromVC.view.frame;
         
         fromVC.view.frame = fromVCRect;
         [self.dismissBG setAlpha:self.dismissViewAlpha];
@@ -243,6 +251,8 @@
                              
                              BOOL isCanceled = [transitionContext transitionWasCancelled];
                              toVC.modalPresentationStyle = UIModalPresentationCustom;
+                             
+                             self.isAnimated = NO;
                              
                              if (isCanceled == YES) {
                                  self.currentViewController = self.drawerViewController;
@@ -368,16 +378,31 @@
 
 - (void)presentDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
+    if (self.isAnimated == YES) return;
+    
     if (self.enablePresent == NO) return;
+    
+    if (self.isPresentedDrawer == YES) return;
     
     if (self.targetViewController == nil || self.drawerViewController == nil) return;
     
     if (self.percentComplete != 0) return;
     
+    self.isAnimated = YES;
+    
     self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
     self.drawerViewController.transitioningDelegate  = self;
     
-    [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:completion];
+    [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:^{
+        if (completion) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                completion();
+            });
+        }
+    }];
+    
+    self.currentViewController = self.drawerViewController;
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishInteractiveTransition];
     });
@@ -385,13 +410,28 @@
 
 - (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
+    if (self.isAnimated == YES) return;
+    
     if (self.enableDismiss == NO) return;
+    
+    if (self.isPresentedDrawer == NO) return;
     
     if (self.targetViewController == nil || self.drawerViewController == nil) return;
     
     if (self.percentComplete != 0) return;
     
-    [self.drawerViewController dismissViewControllerAnimated:YES completion:completion];
+    self.isAnimated = YES;
+    
+    [self.drawerViewController dismissViewControllerAnimated:YES completion:^{
+        if (completion) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                completion();
+            });
+        }
+    }];
+    
+    self.currentViewController = self.targetViewController;
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishInteractiveTransition];
     });

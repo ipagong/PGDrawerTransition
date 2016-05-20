@@ -202,8 +202,8 @@
         toVCRect.origin.y = 0;
         toVC.view.frame = toVCRect;
         
-        [self addCapturedViewWithFromViewController:fromVC containerView:container];
         [self addDismissViewWithTargetViewController:fromVC drawerViewController:toVC containerView:container];
+        [self addCapturedViewWithTargetViewController:fromVC drawerViewController:toVC containerView:container];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                          animations:^{
@@ -213,6 +213,8 @@
                              toVC.view.frame = toVCRect;
                              
                          } completion:^(BOOL finished) {
+                             
+                             [self useCapturedViewInstedOfTargetViewController:fromVC];
                              
                              BOOL isCanceled = [transitionContext transitionWasCancelled];
                              
@@ -231,12 +233,10 @@
                                      self.presentBlock();
                                  }
                              }
-                             
-                             
                          }];
     }
-    
-    else{
+    else
+    {
         
         fromVC.view.frame = fromVCRect;
         [self.dismissBG setAlpha:self.dismissViewAlpha];
@@ -321,7 +321,7 @@
     [containerView addSubview:self.dismissBG];
     [containerView addSubview:self.dismissButton];
     
-    [containerView bringSubviewToFront:self.drawerViewController.view];
+    [containerView bringSubviewToFront:drawerViewController.view];
 }
 
 - (void)removeDismissView
@@ -332,14 +332,29 @@
     }
 }
 
-- (void)addCapturedViewWithFromViewController:(UIViewController *)fromVC containerView:(UIView *)containerView
+- (void)addCapturedViewWithTargetViewController:(UIViewController *)targetViewController drawerViewController:(UIViewController *)drawerViewController containerView:(UIView *)containerView
 {
     if (self.useCapturedFromView == NO) return;
     if (self.capturedFromView) return;
     
-    [fromVC removeFromParentViewController];
-    self.capturedFromView = [[UIImageView alloc] initWithImage:[self imageWithView:fromVC.view]];
+    self.capturedFromView = [[UIImageView alloc] initWithImage:[self imageWithView:targetViewController.view]];
+    [self.capturedFromView setFrame:CGRectMake(0, 0,
+                                               targetViewController.view.frame.size.width,
+                                               targetViewController.view.frame.size.height)];
+    
     [containerView addSubview:self.capturedFromView];
+    [containerView sendSubviewToBack:self.capturedFromView];
+    [containerView bringSubviewToFront:drawerViewController.view];
+    
+    targetViewController.view.hidden = YES;
+}
+
+- (void)useCapturedViewInstedOfTargetViewController:(UIViewController *)targetViewController
+{
+    if (self.useCapturedFromView == YES) {
+        targetViewController.view.hidden = NO;
+        [targetViewController.view removeFromSuperview];
+    }
 }
 
 - (void)removeCapturedFromView
@@ -365,11 +380,7 @@
 
 - (UIModalPresentationStyle)drawerPresentationStyle
 {
-    if (self.useCapturedFromView == YES) {
-        return UIModalPresentationFullScreen;
-    } else {
-        return UIModalPresentationCustom;
-    }
+    return UIModalPresentationCustom;
 }
 
 #pragma mark - private methods

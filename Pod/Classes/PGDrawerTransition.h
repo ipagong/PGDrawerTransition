@@ -26,6 +26,8 @@ typedef void(^PGDrawerInteractionBlock)(void);
 @property (nonatomic, assign) BOOL enablePresent;
 @property (nonatomic, assign) BOOL enableDismiss;
 
+@property (nonatomic, assign) BOOL useCapturedFromView;
+
 @property (nonatomic, assign) BOOL hasDismissView;
 @property (nonatomic, assign) CGFloat dismissViewAlpha;
 @property (nonatomic, assign) CGFloat drawerWidth;

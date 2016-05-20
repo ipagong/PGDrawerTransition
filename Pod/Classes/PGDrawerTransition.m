@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UIView *dismissBG;
 @property (nonatomic, strong) UIButton *dismissButton;
 
+@property (nonatomic, strong) UIImageView *capturedFromView;
+
 @property (nonatomic, readonly) BOOL isPresentedDrawer;
 
 @property (nonatomic, assign) BOOL isAnimated;
@@ -40,6 +42,8 @@
         
         self.enablePresent  = YES;
         self.enableDismiss  = YES;
+        
+        self.useCapturedFromView = NO;
         
         self.dismissDuration = .4;
         self.presentDuration = .6;
@@ -198,6 +202,7 @@
         toVCRect.origin.y = 0;
         toVC.view.frame = toVCRect;
         
+        [self addCapturedViewWithFromViewController:fromVC containerView:container];
         [self addDismissViewWithTargetViewController:fromVC drawerViewController:toVC containerView:container];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
@@ -213,12 +218,12 @@
                              
                              self.isAnimated = NO;
                              
-                             toVC.modalPresentationStyle = UIModalPresentationCustom;
+                             toVC.modalPresentationStyle = [self drawerPresentationStyle];;
                              if (isCanceled == YES) {
                                  self.currentViewController = self.targetViewController;
                                  [transitionContext completeTransition:NO];
                                  [self removeDismissView];
-                                 
+                                 [self removeCapturedFromView];
                              } else {
                                  self.currentViewController = self.drawerViewController;
                                  [transitionContext completeTransition:YES];
@@ -226,6 +231,7 @@
                                      self.presentBlock();
                                  }
                              }
+                             
                              
                          }];
     }
@@ -250,7 +256,7 @@
                              [container bringSubviewToFront:toVC.view];
                              
                              BOOL isCanceled = [transitionContext transitionWasCancelled];
-                             toVC.modalPresentationStyle = UIModalPresentationCustom;
+                             toVC.modalPresentationStyle = [self drawerPresentationStyle];
                              
                              self.isAnimated = NO;
                              
@@ -262,6 +268,7 @@
                                  self.currentViewController = self.targetViewController;
                                  [transitionContext completeTransition:YES];
                                  [self removeDismissView];
+                                 [self removeCapturedFromView];
                                  if (self.dismissBlock) {
                                      self.dismissBlock();
                                  }
@@ -325,6 +332,24 @@
     }
 }
 
+- (void)addCapturedViewWithFromViewController:(UIViewController *)fromVC containerView:(UIView *)containerView
+{
+    if (self.useCapturedFromView == NO) return;
+    if (self.capturedFromView) return;
+    
+    [fromVC removeFromParentViewController];
+    self.capturedFromView = [[UIImageView alloc] initWithImage:[self imageWithView:fromVC.view]];
+    [containerView addSubview:self.capturedFromView];
+}
+
+- (void)removeCapturedFromView
+{
+    if (self.capturedFromView) {
+        [self.capturedFromView removeFromSuperview];
+        self.capturedFromView = nil;
+    }
+}
+
 - (BOOL)isPresentedDrawer
 {
     if (self.currentViewController == nil) {
@@ -338,6 +363,14 @@
     return YES;
 }
 
+- (UIModalPresentationStyle)drawerPresentationStyle
+{
+    if (self.useCapturedFromView == YES) {
+        return UIModalPresentationFullScreen;
+    } else {
+        return UIModalPresentationCustom;
+    }
+}
 
 #pragma mark - private methods
 
@@ -349,7 +382,7 @@
     
     if (self.percentComplete != 0) return;
     
-    self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    self.drawerViewController.modalPresentationStyle = [self drawerPresentationStyle];
     self.drawerViewController.transitioningDelegate  = self;
     
     [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:nil];
@@ -390,7 +423,7 @@
     
     self.isAnimated = YES;
     
-    self.drawerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    self.drawerViewController.modalPresentationStyle = [self drawerPresentationStyle];
     self.drawerViewController.transitioningDelegate  = self;
     
     [self.targetViewController presentViewController:self.drawerViewController animated:YES completion:^{
@@ -468,5 +501,20 @@
     CGPoint velocity = [panGestureRecognizer velocityInView:self.drawerViewController.view];
     return fabs(velocity.x) > fabs(velocity.y);
 }
+
+#pragma mark - utils methods
+
+- (UIImage *)imageWithView:(UIView *)view
+{
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, 0, 0.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return img;
+}
+
 
 @end

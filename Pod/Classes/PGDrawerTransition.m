@@ -72,6 +72,8 @@
 {
     if (self.isAnimated == YES) return;
     
+    if ([self canDismiss] == NO) return;
+    
     if (self.enableDismiss == NO) return;
     
     if (self.isPresentedDrawer == NO) return;
@@ -123,6 +125,8 @@
 - (void)mainViewGestureHandler:(UIPanGestureRecognizer*)recognizer
 {
     if (self.isAnimated == YES) return;
+    
+    if ([self canPresent] == NO) return;
     
     if (self.enablePresent == NO) return;
     
@@ -383,10 +387,28 @@
     return UIModalPresentationCustom;
 }
 
+- (BOOL)canPresent
+{
+    if (self.drawerDelegate && [self.drawerDelegate respondsToSelector:@selector(canPresentWithDrawerTransition:)] == YES) {
+        return [self.drawerDelegate canPresentWithDrawerTransition:self];
+    }
+    return YES;
+}
+
+- (BOOL)canDismiss
+{
+    if (self.drawerDelegate && [self.drawerDelegate respondsToSelector:@selector(canDismissWithDrawerTransition:)] == YES) {
+        return [self.drawerDelegate canDismissWithDrawerTransition:self];
+    }
+    return YES;
+}
+
 #pragma mark - private methods
 
 - (void)presentDrawer
 {
+    if ([self canPresent] == NO) return;
+    
     if (self.enablePresent == NO) return;
     
     if (self.targetViewController == nil || self.drawerViewController == nil) return;
@@ -401,6 +423,8 @@
 
 - (void)dismissDrawer
 {
+    if ([self canDismiss] == NO) return;
+    
     if (self.enableDismiss == NO) return;
     
     if (self.targetViewController == nil || self.drawerViewController == nil) return;
@@ -422,6 +446,8 @@
 
 - (void)presentDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
+    if ([self canPresent] == NO) return;
+    
     if (self.isAnimated == YES) return;
     
     if (self.enablePresent == NO) return;
@@ -454,6 +480,8 @@
 
 - (void)dismissDrawerViewControllerWithAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
+    if ([self canDismiss] == NO) return;
+    
     if (self.isAnimated == YES) return;
     
     if (self.enableDismiss == NO) return;

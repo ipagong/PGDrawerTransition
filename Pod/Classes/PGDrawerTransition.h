@@ -10,6 +10,16 @@
 
 typedef void(^PGDrawerInteractionBlock)(void);
 
+@class PGDrawerTransition;
+
+@protocol PGDrawerTransitionDelegate <NSObject>
+
+@optional
+- (BOOL)canPresentWithDrawerTransition:(PGDrawerTransition *)transition;
+- (BOOL)canDismissWithDrawerTransition:(PGDrawerTransition *)transition;
+
+@end
+
 @interface PGDrawerTransition : UIPercentDrivenInteractiveTransition
 <UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate>
 
@@ -37,5 +47,8 @@ typedef void(^PGDrawerInteractionBlock)(void);
 
 @property (nonatomic, weak) UIViewController *targetViewController;
 @property (nonatomic, weak) UIViewController *drawerViewController;
+
+@property (nonatomic, weak) id <PGDrawerTransitionDelegate> drawerDelegate;
+
 
 @end

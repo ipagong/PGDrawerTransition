@@ -80,7 +80,6 @@
     static CGPoint gLocation;
     static CGFloat gContainerWidth;
     
-    self.hasInteraction = YES;
     
     CGPoint location = [recognizer locationInView:[self.drawerViewController.view window]];
     CGPoint velocity = [recognizer velocityInView:[self.drawerViewController.view window]];
@@ -91,6 +90,7 @@
             gContainerWidth = CGRectGetWidth(self.drawerViewController.view.bounds);
             gLocation = [recognizer locationInView:[self.drawerViewController.view window]];
             
+            self.hasInteraction = YES;
             [self dismissDrawer];
         }
             break;
@@ -107,15 +107,19 @@
         {
             self.isAnimated = YES;
             
-            if (velocity.x < 0) {
-                [self finishInteractiveTransition];
-                self.currentViewController = self.targetViewController;
-                self.hasInteraction = NO;
+            if (self.hasInteraction == YES) {
+                if (velocity.x < 0) {
+                    [self finishInteractiveTransition];
+                    self.currentViewController = self.targetViewController;
+                } else {
+                    [self cancelInteractiveTransition];
+                    self.currentViewController = self.drawerViewController;
+                }
             } else {
-                [self cancelInteractiveTransition];
-                self.currentViewController = self.drawerViewController;
-                self.hasInteraction = NO;
+                self.isAnimated = NO;
             }
+            
+            self.hasInteraction = NO;
         }
             break;
             
@@ -135,14 +139,13 @@
     
     if (self.isPresentedDrawer == YES) return;
     
-    self.hasInteraction = YES;
-    
     CGPoint location = [recognizer locationInView:[self.targetViewController.view window]];
     CGPoint velocity = [recognizer velocityInView:[self.targetViewController.view window]];
     
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
         {
+            self.hasInteraction = YES;
             [self presentDrawer];
         }
             break;
@@ -158,15 +161,19 @@
         {
             self.isAnimated = YES;
             
-            if (velocity.x > 0) {
-                [self finishInteractiveTransition];
-                self.currentViewController = self.drawerViewController;
-                self.hasInteraction = NO;
+            if (self.hasInteraction == YES) {
+                if (velocity.x > 0) {
+                    [self finishInteractiveTransition];
+                    self.currentViewController = self.drawerViewController;
+                } else {
+                    [self cancelInteractiveTransition];
+                    self.currentViewController = self.targetViewController;
+                }
             } else {
-                [self cancelInteractiveTransition];
-                self.currentViewController = self.targetViewController;
-                self.hasInteraction = NO;
+                self.isAnimated = NO;
             }
+            
+            self.hasInteraction = NO;
         }
             break;
             
@@ -197,7 +204,7 @@
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toVC   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *container = [transitionContext containerView];
-
+    
     if(toVC == self.drawerViewController){
         [self presentAnimationWithFromViewController:fromVC toViewController:toVC container:container context:transitionContext];
     } else {

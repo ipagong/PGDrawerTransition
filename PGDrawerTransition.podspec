@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "PGDrawerTransition"
-  s.version          = "0.2.6"
+  s.version          = "1.0.0"
   s.summary          = "Percentage Interaction Drawer View Transition."
 
 # This description is used to generate tags and improve search results.

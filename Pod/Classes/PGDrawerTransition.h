@@ -43,6 +43,7 @@ typedef void(^PGDrawerInteractionBlock)(void);
 @property (nonatomic, assign) CGFloat drawerWidth;
 
 @property (nonatomic, readonly) UIButton *dismissButton;
+@property (nonatomic, readonly) UIButton *innerButton; //for accessibiilty.
 
 @property (nonatomic, assign) NSTimeInterval presentDuration;
 @property (nonatomic, assign) NSTimeInterval dismissDuration;

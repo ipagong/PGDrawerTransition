@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) UIView *dismissBG;
 @property (nonatomic, strong) UIButton *dismissButton;
+@property (nonatomic, strong) UIButton *innerButton; //for accessibiilty.
 
 @property (nonatomic, readonly) BOOL isPresentedDrawer;
 
@@ -314,6 +315,19 @@
     return _dismissButton;
 }
 
+- (UIView *)innerButton
+{
+    if (_innerButton == nil) {
+        _innerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_innerButton setBackgroundColor:[UIColor clearColor]];
+        [_innerButton addTarget:self action:@selector(onClickDismissView:) forControlEvents:UIControlEventTouchUpInside];
+        [_innerButton setFrame:CGRectMake(0, 0,
+                                          [self.targetViewController.view window].frame.size.width,
+                                          [self.targetViewController.view window].frame.size.height)];
+    }
+    return _innerButton;
+}
+
 - (UIView *)dismissBG
 {
     if (_dismissBG == nil) {
@@ -340,10 +354,14 @@
                                             targetViewController.view.frame.size.width,
                                             targetViewController.view.frame.size.height)];
     [self.dismissBG setFrame:self.dismissButton.frame];
+    [self.innerButton setFrame:CGRectMake(CGRectGetWidth(drawerViewController.view.frame), 0,
+                                          CGRectGetWidth(targetViewController.view.bounds) - CGRectGetWidth(drawerViewController.view.frame),
+                                          CGRectGetHeight(targetViewController.view.bounds))];
     
     [containerView addSubview:self.dismissBG];
     [containerView addSubview:self.dismissButton];
     
+    [targetViewController.view addSubview:self.innerButton];
     [containerView bringSubviewToFront:drawerViewController.view];
 }
 
@@ -352,6 +370,7 @@
     if (self.dismissButton.superview) {
         [self.dismissButton removeFromSuperview];
         [self.dismissBG     removeFromSuperview];
+        [self.innerButton   removeFromSuperview];
     }
 }
 

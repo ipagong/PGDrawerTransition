@@ -7,33 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1800D4711CA1332100D150EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1800D4701CA1332100D150EE /* main.m */; };
-		1800D4741CA1332100D150EE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1800D4731CA1332100D150EE /* AppDelegate.m */; };
-		1800D47C1CA1332200D150EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1800D47B1CA1332200D150EE /* Assets.xcassets */; };
-		1800D47F1CA1332200D150EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1800D47D1CA1332200D150EE /* LaunchScreen.storyboard */; };
-		180AEA011CAA7E590024FF2D /* ExamCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */; };
-		180AEA041CAB6AB00024FF2D /* ExamDrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */; };
-		18FAD77A1CB381300063F1C5 /* PGDrawerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FAD7791CB381300063F1C5 /* PGDrawerTransition.m */; };
+		9186F31E1E778FA000609F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9186F31D1E778FA000609F2A /* AppDelegate.swift */; };
+		9186F3201E778FA000609F2A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9186F31F1E778FA000609F2A /* ViewController.swift */; };
+		9186F3231E778FA000609F2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9186F3211E778FA000609F2A /* Main.storyboard */; };
+		9186F3251E778FA000609F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9186F3241E778FA000609F2A /* Assets.xcassets */; };
+		9186F3281E778FA000609F2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9186F3261E778FA000609F2A /* LaunchScreen.storyboard */; };
+		9186F3301E77900000609F2A /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9186F32F1E77900000609F2A /* MenuViewController.swift */; };
+		9186F3331E7790D900609F2A /* DrawerTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9186F3321E7790D900609F2A /* DrawerTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1800D46C1CA1332100D150EE /* PGDrawerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PGDrawerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1800D4701CA1332100D150EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1800D4721CA1332100D150EE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		1800D4731CA1332100D150EE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		1800D47B1CA1332200D150EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1800D47E1CA1332200D150EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		1800D4801CA1332200D150EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		180AE9FF1CAA7E590024FF2D /* ExamCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamCenterViewController.h; sourceTree = "<group>"; };
-		180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamCenterViewController.m; sourceTree = "<group>"; };
-		180AEA021CAB6AB00024FF2D /* ExamDrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamDrawerViewController.h; sourceTree = "<group>"; };
-		180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamDrawerViewController.m; sourceTree = "<group>"; };
-		18FAD7781CB381300063F1C5 /* PGDrawerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGDrawerTransition.h; path = ../../Pod/Classes/PGDrawerTransition.h; sourceTree = "<group>"; };
-		18FAD7791CB381300063F1C5 /* PGDrawerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGDrawerTransition.m; path = ../../Pod/Classes/PGDrawerTransition.m; sourceTree = "<group>"; };
+		9186F31A1E778FA000609F2A /* PGDrawerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PGDrawerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9186F31D1E778FA000609F2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9186F31F1E778FA000609F2A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9186F3221E778FA000609F2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9186F3241E778FA000609F2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9186F3271E778FA000609F2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9186F3291E778FA000609F2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9186F32F1E77900000609F2A /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		9186F3321E7790D900609F2A /* DrawerTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DrawerTransition.swift; path = ../../Pod/Classes/DrawerTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1800D4691CA1332100D150EE /* Frameworks */ = {
+		9186F3171E778FA000609F2A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -43,68 +39,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1800D4631CA1332100D150EE = {
+		9186F3111E778FA000609F2A = {
 			isa = PBXGroup;
 			children = (
-				1800D46E1CA1332100D150EE /* PGDrawerExample */,
-				1800D46D1CA1332100D150EE /* Products */,
-				18FAD7771CB3810C0063F1C5 /* Classes */,
+				9186F31C1E778FA000609F2A /* PGDrawerExample */,
+				9186F31B1E778FA000609F2A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		1800D46D1CA1332100D150EE /* Products */ = {
+		9186F31B1E778FA000609F2A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1800D46C1CA1332100D150EE /* PGDrawerExample.app */,
+				9186F31A1E778FA000609F2A /* PGDrawerExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1800D46E1CA1332100D150EE /* PGDrawerExample */ = {
+		9186F31C1E778FA000609F2A /* PGDrawerExample */ = {
 			isa = PBXGroup;
 			children = (
-				1800D4721CA1332100D150EE /* AppDelegate.h */,
-				1800D4731CA1332100D150EE /* AppDelegate.m */,
-				180AE9FF1CAA7E590024FF2D /* ExamCenterViewController.h */,
-				180AEA001CAA7E590024FF2D /* ExamCenterViewController.m */,
-				180AEA021CAB6AB00024FF2D /* ExamDrawerViewController.h */,
-				180AEA031CAB6AB00024FF2D /* ExamDrawerViewController.m */,
-				1800D47B1CA1332200D150EE /* Assets.xcassets */,
-				1800D47D1CA1332200D150EE /* LaunchScreen.storyboard */,
-				1800D4801CA1332200D150EE /* Info.plist */,
-				1800D46F1CA1332100D150EE /* Supporting Files */,
+				9186F3311E7790CA00609F2A /* Vender */,
+				9186F31D1E778FA000609F2A /* AppDelegate.swift */,
+				9186F31F1E778FA000609F2A /* ViewController.swift */,
+				9186F32F1E77900000609F2A /* MenuViewController.swift */,
+				9186F3211E778FA000609F2A /* Main.storyboard */,
+				9186F3241E778FA000609F2A /* Assets.xcassets */,
+				9186F3261E778FA000609F2A /* LaunchScreen.storyboard */,
+				9186F3291E778FA000609F2A /* Info.plist */,
 			);
 			path = PGDrawerExample;
 			sourceTree = "<group>";
 		};
-		1800D46F1CA1332100D150EE /* Supporting Files */ = {
+		9186F3311E7790CA00609F2A /* Vender */ = {
 			isa = PBXGroup;
 			children = (
-				1800D4701CA1332100D150EE /* main.m */,
+				9186F3321E7790D900609F2A /* DrawerTransition.swift */,
 			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		18FAD7771CB3810C0063F1C5 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				18FAD7781CB381300063F1C5 /* PGDrawerTransition.h */,
-				18FAD7791CB381300063F1C5 /* PGDrawerTransition.m */,
-			);
-			name = Classes;
-			path = PGDrawerExample;
+			name = Vender;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1800D46B1CA1332100D150EE /* PGDrawerExample */ = {
+		9186F3191E778FA000609F2A /* PGDrawerExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1800D4831CA1332200D150EE /* Build configuration list for PBXNativeTarget "PGDrawerExample" */;
+			buildConfigurationList = 9186F32C1E778FA000609F2A /* Build configuration list for PBXNativeTarget "PGDrawerExample" */;
 			buildPhases = (
-				1800D4681CA1332100D150EE /* Sources */,
-				1800D4691CA1332100D150EE /* Frameworks */,
-				1800D46A1CA1332100D150EE /* Resources */,
+				9186F3161E778FA000609F2A /* Sources */,
+				9186F3171E778FA000609F2A /* Frameworks */,
+				9186F3181E778FA000609F2A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -112,24 +95,26 @@
 			);
 			name = PGDrawerExample;
 			productName = PGDrawerExample;
-			productReference = 1800D46C1CA1332100D150EE /* PGDrawerExample.app */;
+			productReference = 9186F31A1E778FA000609F2A /* PGDrawerExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1800D4641CA1332100D150EE /* Project object */ = {
+		9186F3121E778FA000609F2A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
-				ORGANIZATIONNAME = suwan;
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = ipagong;
 				TargetAttributes = {
-					1800D46B1CA1332100D150EE = {
-						CreatedOnToolsVersion = 7.2.1;
+					9186F3191E778FA000609F2A = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 1800D4671CA1332100D150EE /* Build configuration list for PBXProject "PGDrawerExample" */;
+			buildConfigurationList = 9186F3151E778FA000609F2A /* Build configuration list for PBXProject "PGDrawerExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -137,48 +122,56 @@
 				en,
 				Base,
 			);
-			mainGroup = 1800D4631CA1332100D150EE;
-			productRefGroup = 1800D46D1CA1332100D150EE /* Products */;
+			mainGroup = 9186F3111E778FA000609F2A;
+			productRefGroup = 9186F31B1E778FA000609F2A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1800D46B1CA1332100D150EE /* PGDrawerExample */,
+				9186F3191E778FA000609F2A /* PGDrawerExample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1800D46A1CA1332100D150EE /* Resources */ = {
+		9186F3181E778FA000609F2A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1800D47F1CA1332200D150EE /* LaunchScreen.storyboard in Resources */,
-				1800D47C1CA1332200D150EE /* Assets.xcassets in Resources */,
+				9186F3281E778FA000609F2A /* LaunchScreen.storyboard in Resources */,
+				9186F3251E778FA000609F2A /* Assets.xcassets in Resources */,
+				9186F3231E778FA000609F2A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1800D4681CA1332100D150EE /* Sources */ = {
+		9186F3161E778FA000609F2A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				180AEA011CAA7E590024FF2D /* ExamCenterViewController.m in Sources */,
-				1800D4741CA1332100D150EE /* AppDelegate.m in Sources */,
-				180AEA041CAB6AB00024FF2D /* ExamDrawerViewController.m in Sources */,
-				18FAD77A1CB381300063F1C5 /* PGDrawerTransition.m in Sources */,
-				1800D4711CA1332100D150EE /* main.m in Sources */,
+				9186F3201E778FA000609F2A /* ViewController.swift in Sources */,
+				9186F3331E7790D900609F2A /* DrawerTransition.swift in Sources */,
+				9186F3301E77900000609F2A /* MenuViewController.swift in Sources */,
+				9186F31E1E778FA000609F2A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		1800D47D1CA1332200D150EE /* LaunchScreen.storyboard */ = {
+		9186F3211E778FA000609F2A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1800D47E1CA1332200D150EE /* Base */,
+				9186F3221E778FA000609F2A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9186F3261E778FA000609F2A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9186F3271E778FA000609F2A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -186,10 +179,11 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1800D4811CA1332200D150EE /* Debug */ = {
+		9186F32A1E778FA000609F2A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -197,10 +191,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -222,17 +219,20 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		1800D4821CA1332200D150EE /* Release */ = {
+		9186F32B1E778FA000609F2A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -240,10 +240,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -259,57 +262,60 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		1800D4841CA1332200D150EE /* Debug */ = {
+		9186F32D1E778FA000609F2A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = PGDrawerExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pagong.drawer.test.PGDrawerExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pagong.PGDrawerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		1800D4851CA1332200D150EE /* Release */ = {
+		9186F32E1E778FA000609F2A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = PGDrawerExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pagong.drawer.test.PGDrawerExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pagong.PGDrawerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1800D4671CA1332100D150EE /* Build configuration list for PBXProject "PGDrawerExample" */ = {
+		9186F3151E778FA000609F2A /* Build configuration list for PBXProject "PGDrawerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1800D4811CA1332200D150EE /* Debug */,
-				1800D4821CA1332200D150EE /* Release */,
+				9186F32A1E778FA000609F2A /* Debug */,
+				9186F32B1E778FA000609F2A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1800D4831CA1332200D150EE /* Build configuration list for PBXNativeTarget "PGDrawerExample" */ = {
+		9186F32C1E778FA000609F2A /* Build configuration list for PBXNativeTarget "PGDrawerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1800D4841CA1332200D150EE /* Debug */,
-				1800D4851CA1332200D150EE /* Release */,
+				9186F32D1E778FA000609F2A /* Debug */,
+				9186F32E1E778FA000609F2A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 1800D4641CA1332100D150EE /* Project object */;
+	rootObject = 9186F3121E778FA000609F2A /* Project object */;
 }

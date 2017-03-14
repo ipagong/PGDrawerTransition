@@ -21,10 +21,9 @@ class ViewController: UIViewController, DrawerTransitionDelegate {
         self.button.addTarget(self, action: #selector(click), for: .touchUpInside)
         self.view.addSubview(self.button)
         
-        self.drawerTransition = DrawerTransition(target: self)
-//        self.drawerTransition = DrawerTransition(target: self, drawer: menu)
-        self.drawerTransition.setPresentCompletedBlock { print("present...") }
-        self.drawerTransition.setDismissCompletedBlock { print("dismiss...") }
+        self.drawerTransition = DrawerTransition(target: self, drawer: menu)
+        self.drawerTransition.setPresentCompletion { print("present...") }
+        self.drawerTransition.setDismissCompletion { print("dismiss...") }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +37,7 @@ class ViewController: UIViewController, DrawerTransitionDelegate {
     }
     
     func click() { button.backgroundColor = (button.backgroundColor == .red ? .blue : .red) }
-    func open() { self.drawerTransition.presentDrawerViewController() }
+    func open() { self.drawerTransition.presentDrawerViewController(animated: true) }
 
 }
 

@@ -221,7 +221,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         guard hasDismissView == true    else { return }
         guard isPresentedDrawer == true else { return }
         
-        dismissDrawerViewController()
+        dismissDrawerViewController(animated: true)
     }
     
     //MARK: - private methods
@@ -311,7 +311,6 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             }
             
         })
-        
     }
     
     private func dismissAnimation(from:UIViewController, to:UIViewController, container:UIView, context: UIViewControllerContextTransitioning) {
@@ -392,8 +391,14 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
     
     //MARK: - public methods
+
+    @objc
+    public func presentDrawerViewController(animated:Bool) {
+        self.presentDrawerViewController(animated: animated, completion: nil)
+    }
     
-    public func presentDrawerViewController(animated:Bool? = true, completion:DrawerVoidBlock? = nil) {
+    @objc
+    public func presentDrawerViewController(animated:Bool, completion:DrawerVoidBlock?) {
         guard let drawer = self.drawer   else { return }
         guard canPresent == true         else { return }
         guard isAnimated == false        else { return }
@@ -406,10 +411,16 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         drawer.modalPresentationStyle = self.drawerPresentationStyle
         drawer.transitioningDelegate  = self
         
-        self.target.present(drawer, animated: animated!) { completion?() }
+        self.target.present(drawer, animated: animated) { completion?() }
     }
     
-    public func dismissDrawerViewController(animated:Bool? = true, completion:DrawerVoidBlock? = nil) {
+    @objc
+    public func dismissDrawerViewController(animated:Bool) {
+        self.presentDrawerViewController(animated: animated, completion: nil)
+    }
+    
+    @objc
+    public func dismissDrawerViewController(animated:Bool, completion:DrawerVoidBlock?) {
         guard let drawer = self.drawer  else { return }
         guard canDismiss == true        else { return }
         guard isAnimated == false       else { return }
@@ -422,9 +433,9 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         self.isAnimated = true
         
-        drawer.dismiss(animated: animated!) { completion?() }
+        drawer.dismiss(animated: animated) { completion?() }
     }
     
-    public func setPresentCompletedBlock(block:DrawerVoidBlock?) { self.presentBlock = block }
-    public func setDismissCompletedBlock(block:DrawerVoidBlock?) { self.dismissBlock = block }
+    @objc public func setPresentCompletion(block:DrawerVoidBlock?) { self.presentBlock = block }
+    @objc public func setDismissCompletion(block:DrawerVoidBlock?) { self.dismissBlock = block }
 }

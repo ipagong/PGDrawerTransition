@@ -72,6 +72,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height)
     }
     
+    @objc
     init(target:UIViewController!) {
         super.init()
         
@@ -79,6 +80,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         target.view.addGestureRecognizer(self.mainViewGesutre)
     }
     
+    @objc
     init(target:UIViewController!, drawer:UIViewController!) {
         super.init()
         
@@ -99,7 +101,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return innerButton
     }()
     
-    lazy private var dismissButton:UIButton = {
+    lazy public var dismissButton:UIButton = {
         let dismissButton = UIButton(type: .custom)
         dismissButton.backgroundColor = .clear
         dismissButton.addTarget(self, action: #selector(onClickDismiss), for: .touchUpInside)
@@ -107,7 +109,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return dismissButton
     }()
     
-    lazy private var dismissBg:UIView = {
+    lazy public var dismissBg:UIView = {
         let dismissBg = UIView(frame: .zero)
         dismissBg.backgroundColor = .black
         dismissBg.alpha = 0
@@ -393,6 +395,11 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     //MARK: - public methods
 
     @objc
+    public func presentDrawerViewController() {
+        self.presentDrawerViewController(animated: true, completion: nil)
+    }
+    
+    @objc
     public func presentDrawerViewController(animated:Bool) {
         self.presentDrawerViewController(animated: animated, completion: nil)
     }
@@ -412,6 +419,11 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         drawer.transitioningDelegate  = self
         
         self.target.present(drawer, animated: animated) { completion?() }
+    }
+    
+    @objc
+    public func dismissDrawerViewController() {
+        self.presentDrawerViewController(animated: true, completion: nil)
     }
     
     @objc

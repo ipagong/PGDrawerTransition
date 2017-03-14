@@ -2,20 +2,24 @@
 
 Drawer View Transition (Objective-C)
 
-just implements 'UIPercentDrivenInteractiveTransition' protocol.
+- just implements 'UIPercentDrivenInteractiveTransition' protocol.  
+
+- updated Swift3.0 version. 
+
+- use 1.0.1 (tag) for objective-c. 
 
 # Installation with CocoaPods
 
 Podfile:
 
     source 'https://github.com/CocoaPods/Specs.git'
-    platform :ios, '7.0'
+    use_frameworks!
 
     pod 'PGDrawerTransition'
 
 Then, run the following command:
 
-    $ pod install
+    $ pod install (or update)
 
 # Demo  
 

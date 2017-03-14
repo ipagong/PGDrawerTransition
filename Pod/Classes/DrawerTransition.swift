@@ -73,7 +73,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
     
     @objc
-    init(target:UIViewController!) {
+    public init(target:UIViewController!) {
         super.init()
         
         self.target = target
@@ -81,7 +81,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
     
     @objc
-    init(target:UIViewController!, drawer:UIViewController!) {
+    public init(target:UIViewController!, drawer:UIViewController!) {
         super.init()
         
         self.target = target

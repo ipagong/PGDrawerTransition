@@ -67,6 +67,11 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     private var canPresent:Bool { return self.drawerDelegate?.canPresentWith?(transition: self) ?? true }
     private var canDismiss:Bool { return self.drawerDelegate?.canDismissWith?(transition: self) ?? true }
     
+    private var dismissRect:CGRect {
+        guard let window = self.target.view.window else { return .zero }
+        return CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height)
+    }
+    
     init(target:UIViewController!) {
         super.init()
         
@@ -86,6 +91,14 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     //MARK: - lazy properties
     
+    lazy public var innerButton:UIButton = {
+        let innerButton = UIButton(type: .custom)
+        innerButton.backgroundColor = .clear
+        innerButton.addTarget(self, action: #selector(onClickDismiss), for: .touchUpInside)
+        innerButton.frame = self.dismissRect
+        return innerButton
+    }()
+    
     lazy private var dismissButton:UIButton = {
         let dismissButton = UIButton(type: .custom)
         dismissButton.backgroundColor = .clear
@@ -100,19 +113,6 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         dismissBg.alpha = 0
         return dismissBg
     }()
-    
-    lazy private var innerButton:UIButton = {
-        let innerButton = UIButton(type: .custom)
-        innerButton.backgroundColor = .clear
-        innerButton.addTarget(self, action: #selector(onClickDismiss), for: .touchUpInside)
-        innerButton.frame = self.dismissRect
-        return innerButton
-    }()
-    
-    private var dismissRect:CGRect {
-        guard let window = self.target.view.window else { return .zero }
-        return CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height)
-    }
     
     lazy private var mainViewGesutre:UIScreenEdgePanGestureRecognizer = {
         let gesutre = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(onMainGesture(_:)))
@@ -393,7 +393,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     //MARK: - public methods
     
-    public func presentDrawerViewController(animated:Bool? = true, completion:(() -> Swift.Void)? = nil) {
+    public func presentDrawerViewController(animated:Bool? = true, completion:DrawerVoidBlock? = nil) {
         guard let drawer = self.drawer   else { return }
         guard canPresent == true         else { return }
         guard isAnimated == false        else { return }
@@ -406,11 +406,10 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         drawer.modalPresentationStyle = self.drawerPresentationStyle
         drawer.transitioningDelegate  = self
         
-        self.target.present(drawer, animated: animated!, completion: completion)
-        
+        self.target.present(drawer, animated: animated!) { completion?() }
     }
     
-    public func dismissDrawerViewController(animated:Bool? = true, completion:(() -> Swift.Void)? = nil) {
+    public func dismissDrawerViewController(animated:Bool? = true, completion:DrawerVoidBlock? = nil) {
         guard let drawer = self.drawer  else { return }
         guard canDismiss == true        else { return }
         guard isAnimated == false       else { return }
@@ -423,7 +422,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         self.isAnimated = true
         
-        drawer.dismiss(animated: animated!, completion: completion)
+        drawer.dismiss(animated: animated!) { completion?() }
     }
     
     public func setPresentCompletedBlock(block:DrawerVoidBlock?) { self.presentBlock = block }

@@ -178,8 +178,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     func onDrawerGesture(_ recognizer:UIScreenEdgePanGestureRecognizer) {
         guard let drawer = self.drawer  else { return }
         guard isAnimated == false       else { return }
-        guard canPresent == true        else { return }
-        guard enablePresent == true     else { return }
+        guard canDismiss == true        else { return }
+        guard enableDismiss == true     else { return }
         guard isPresentedDrawer == true else { return }
         
         guard let window = drawer.view.window else { return }
@@ -423,12 +423,12 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     @objc
     public func dismissDrawerViewController() {
-        self.presentDrawerViewController(animated: true, completion: nil)
+        self.dismissDrawerViewController(animated: true, completion: nil)
     }
     
     @objc
     public func dismissDrawerViewController(animated:Bool) {
-        self.presentDrawerViewController(animated: animated, completion: nil)
+        self.dismissDrawerViewController(animated: animated, completion: nil)
     }
     
     @objc

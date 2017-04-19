@@ -84,15 +84,13 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         guard let window = self.target.view.window else { return .zero }
         return CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height)
     }
-    
+
     @objc
     public init(target:UIViewController!) {
         super.init()
         
         self.target = target
         target.view.addGestureRecognizer(self.mainViewGesutre)
-        
-        wantsInteractiveStart = false
     }
     
     @objc

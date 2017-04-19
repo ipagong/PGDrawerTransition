@@ -19,6 +19,17 @@ public protocol DrawerTransitionDelegate:NSObjectProtocol {
 @objc
 public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
     
+    public var edgeType:EdgeType = .left {
+        didSet {
+            //prevent edgeType change during transitioning.
+            guard self.isPresentedDrawer == false else {
+                self.edgeType = oldValue
+                return
+            }
+            self.mainViewGesutre.edges = self.gestureEdge
+        }
+    }
+    
     public var enablePresent:Bool = true
     public var enableDismiss:Bool = true
     
@@ -62,6 +73,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return true
     }
     
+    private var gestureEdge:UIRectEdge { return (self.edgeType == .right ? .right : .left) }
+    
     private var drawerPresentationStyle:UIModalPresentationStyle { return .custom }
     
     private var canPresent:Bool { return self.drawerDelegate?.canPresentWith?(transition: self) ?? true }
@@ -78,6 +91,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         self.target = target
         target.view.addGestureRecognizer(self.mainViewGesutre)
+        
+        wantsInteractiveStart = false
     }
     
     @objc
@@ -90,6 +105,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         self.drawer = drawer
         drawer.view.addGestureRecognizer(self.drawerViewGesture)
     }
+    
     
     //MARK: - lazy properties
     
@@ -118,7 +134,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     lazy private var mainViewGesutre:UIScreenEdgePanGestureRecognizer = {
         let gesutre = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(onMainGesture(_:)))
-        gesutre.edges = .left
+        gesutre.edges = self.gestureEdge
         return gesutre
     }()
     
@@ -131,7 +147,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     //MARK: - action methods
     
-    func onMainGesture(_ recognizer:UIPanGestureRecognizer) {
+    func onMainGesture(_ recognizer:UIScreenEdgePanGestureRecognizer) {
         guard let _ = self.drawer        else { return }
         guard isAnimated == false        else { return }
         guard canPresent == true         else { return }
@@ -140,8 +156,21 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         guard let window = self.target.view.window else { return }
         
-        let location = recognizer.location(in: window)
-        let velocity = recognizer.velocity(in: self.target.view.window)
+        var percentage:CGFloat {
+            let location = recognizer.location(in: window)
+            switch edgeType {
+            case .left:  return (location.x / window.bounds.width)
+            case .right: return ((window.bounds.width - location.x) / window.bounds.width)
+            }
+        }
+        
+        var finished:Bool {
+            let velocity = recognizer.velocity(in: window)
+            switch edgeType {
+            case .left:  return (velocity.x > 0)
+            case .right: return (velocity.x < 0)
+            }
+        }
         
         switch recognizer.state {
         case .began:
@@ -149,7 +178,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             self.presentDrawerAction()
             
         case .changed:
-            self.update(location.x / window.bounds.width)
+
+            self.update(percentage)
             
         case .ended:
             guard self.hasInteraction == true else {
@@ -159,7 +189,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             
             self.isAnimated = true
             
-            if (velocity.x > 0) {
+            if (finished) {
                 self.finish()
                 self.current = self.target
             } else {
@@ -175,7 +205,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
     }
     
-    func onDrawerGesture(_ recognizer:UIScreenEdgePanGestureRecognizer) {
+    func onDrawerGesture(_ recognizer:UIPanGestureRecognizer) {
         guard let drawer = self.drawer  else { return }
         guard isAnimated == false       else { return }
         guard canDismiss == true        else { return }
@@ -187,6 +217,22 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         let location = recognizer.location(in: window)
         let velocity = recognizer.velocity(in: window)
         
+        var percentage:CGFloat {
+            let location = recognizer.location(in: window)
+            switch edgeType {
+            case .left:  return (max(0, beganPanPoint.x - location.x)/drawer.view.bounds.width)
+            case .right: return (max(0, location.x - beganPanPoint.x)/drawer.view.bounds.width)
+            }
+        }
+        
+        var finished:Bool {
+            let velocity = recognizer.velocity(in: window)
+            switch edgeType {
+            case .left:  return (velocity.x < 0)
+            case .right: return (velocity.x > 0)
+            }
+        }
+        
         switch recognizer.state {
         case .began:
             self.beganPanPoint = location
@@ -194,7 +240,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             self.dismissDrawerAction()
             
         case .changed:
-            self.update(max(0, beganPanPoint.x - location.x)/drawer.view.bounds.width)
+            self.update(percentage)
             
         case .ended:
             guard hasInteraction == true else {
@@ -204,7 +250,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             
             self.isAnimated = true
             
-            if (velocity.x < 0) {
+            if (finished) {
                 self.finish()
                 self.current = self.target
             } else {
@@ -225,6 +271,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         dismissDrawerViewController(animated: true)
     }
+
     
     //MARK: - private methods
     
@@ -236,8 +283,10 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         dismissButton.frame = CGRect(x: 0, y: 0, width: target.view.frame.width, height: target.view.frame.height)
         dismissBg.frame     = CGRect(x: 0, y: 0, width: target.view.frame.width, height: target.view.frame.height)
-        innerButton.frame   = CGRect(x: drawer.view.frame.width,
-                                     y: 0,
+        
+        let buttonX = (self.edgeType == .left ? drawer.view.frame.width : 0)
+        
+        innerButton.frame   = CGRect(x: buttonX, y: 0,
                                      width:  target.view.frame.width - drawer.view.frame.width,
                                      height: target.view.frame.height)
         
@@ -283,7 +332,9 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         var sourceRect = from.view.window?.bounds ?? from.view.bounds
         sourceRect.size.width = (self.drawerWidth == 0 ? sourceRect.size.width * 0.8 : self.drawerWidth)
-        sourceRect.origin.x = -sourceRect.width
+        
+        sourceRect.origin.x = (self.edgeType == .left ? -sourceRect.width : from.view.bounds.width + sourceRect.width)
+        
         sourceRect.origin.y = 0
         to.view.frame = sourceRect
         
@@ -293,7 +344,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             
             self.dismissBg.alpha = self.dismissViewAlpha
             var toRect = to.view.frame
-            toRect.origin.x = 0
+            
+            toRect.origin.x = (self.edgeType == .left ? 0 : from.view.bounds.width - sourceRect.width)
             to.view.frame = toRect
             
         }, completion: { _ in
@@ -321,7 +373,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         UIView.animate(withDuration: self.transitionDuration(using: context), animations: {
             
             var rect = from.view.frame
-            rect.origin.x = -rect.width
+            
+            rect.origin.x = (self.edgeType == .left ? -rect.width : to.view.bounds.width)
             from.view.frame = rect
             self.dismissBg.alpha = 0
             
@@ -450,4 +503,11 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     @objc public func setPresentCompletion(block:DrawerVoidBlock?) { self.presentBlock = block }
     @objc public func setDismissCompletion(block:DrawerVoidBlock?) { self.dismissBlock = block }
+}
+
+extension DrawerTransition {
+    public enum EdgeType:Int {
+        case left
+        case right
+    }
 }

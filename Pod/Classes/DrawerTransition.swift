@@ -132,9 +132,9 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     //MARK: - action methods
     
     func onMainGesture(_ recognizer:UIPanGestureRecognizer) {
-        guard let drawer = self.drawer else   { return }
-        guard isAnimated == false else        { return }
-        guard canPresent == true else         { return }
+        guard let _ = self.drawer        else { return }
+        guard isAnimated == false        else { return }
+        guard canPresent == true         else { return }
         guard enablePresent     == true  else { return }
         guard isPresentedDrawer == false else { return }
         

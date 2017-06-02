@@ -338,6 +338,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         self.addDismissView(target: from, drawer: to, container: container)
         
+        from.viewWillDisappear(true)
+        
         UIView.animate(withDuration: self.transitionDuration(using: context), animations: {
             
             self.dismissBg.alpha = self.dismissViewAlpha
@@ -360,6 +362,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
                 self.current = self.drawer
                 context.completeTransition(true)
                 self.presentBlock?()
+                
+                from.viewDidDisappear(true)
             }
             
         })
@@ -367,6 +371,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     private func dismissAnimation(from:UIViewController, to:UIViewController, container:UIView, context: UIViewControllerContextTransitioning) {
         self.dismissBg.alpha = self.dismissViewAlpha
+        
+        to.viewWillAppear(true)
         
         UIView.animate(withDuration: self.transitionDuration(using: context), animations: {
             
@@ -391,6 +397,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
                 context.completeTransition(true)
                 self.removeDismissView()
                 self.dismissBlock?()
+                
+                to.viewDidAppear(true)
             }
             
         })

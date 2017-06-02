@@ -34,7 +34,7 @@ class ViewController: UIViewController, DrawerTransitionDelegate {
         self.rightDrawerTransition.setDismissCompletion { print("right dismiss...") }
         self.rightDrawerTransition.edgeType = .right
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         let left = UIBarButtonItem(title: "LEFT", style: .done, target: self, action: #selector(leftOpen))
         self.navigationItem.leftBarButtonItem = left
@@ -43,10 +43,23 @@ class ViewController: UIViewController, DrawerTransitionDelegate {
         self.navigationItem.rightBarButtonItem = right
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.button.frame = self.view.bounds
     }
+    
     
     func click() { button.backgroundColor = (button.backgroundColor == .red ? .blue : .red) }
     func leftOpen()  { self.leftDrawerTransition.presentDrawerViewController(animated: true) }

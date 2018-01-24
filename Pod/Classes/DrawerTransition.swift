@@ -145,7 +145,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     //MARK: - action methods
     
-    func onMainGesture(_ recognizer:UIScreenEdgePanGestureRecognizer) {
+    @objc func onMainGesture(_ recognizer:UIScreenEdgePanGestureRecognizer) {
         guard let _ = self.drawer        else { return }
         guard isAnimated == false        else { return }
         guard canPresent == true         else { return }
@@ -203,7 +203,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
     }
     
-    func onDrawerGesture(_ recognizer:UIPanGestureRecognizer) {
+    @objc func onDrawerGesture(_ recognizer:UIPanGestureRecognizer) {
         guard let drawer = self.drawer  else { return }
         guard isAnimated == false       else { return }
         guard canDismiss == true        else { return }
@@ -263,7 +263,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         }
     }
     
-    func onClickDismiss() {
+    @objc func onClickDismiss() {
         guard hasDismissView == true    else { return }
         guard isPresentedDrawer == true else { return }
         

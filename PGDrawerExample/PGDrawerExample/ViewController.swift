@@ -61,9 +61,9 @@ class ViewController: UIViewController, DrawerTransitionDelegate {
     }
     
     
-    func click() { button.backgroundColor = (button.backgroundColor == .red ? .blue : .red) }
-    func leftOpen()  { self.leftDrawerTransition.presentDrawerViewController(animated: true) }
-    func rightOpen() { self.rightDrawerTransition.presentDrawerViewController(animated: true) }
+    @objc func click() { button.backgroundColor = (button.backgroundColor == .red ? .blue : .red) }
+    @objc func leftOpen()  { self.leftDrawerTransition.presentDrawerViewController(animated: true) }
+    @objc func rightOpen() { self.rightDrawerTransition.presentDrawerViewController(animated: true) }
 
 }
 

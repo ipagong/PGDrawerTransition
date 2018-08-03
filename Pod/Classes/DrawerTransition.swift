@@ -61,10 +61,11 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     
     public weak var target:UIViewController!
     
+    private weak var current:UIViewController?
+    
     private var presentBlock:DrawerVoidBlock?
     private var dismissBlock:DrawerVoidBlock?
     
-    private var current:UIViewController?
     private var isAnimated:Bool = false
     private var hasInteraction:Bool = false
     private var beganPanPoint:CGPoint = .zero
@@ -340,7 +341,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         from.viewWillDisappear(true)
         
-        UIView.animate(withDuration: self.transitionDuration(using: context), animations: {
+        UIView.animate(withDuration: self.transitionDuration(using: context), animations: { [weak self] in
+            guard let `self` = self else { return }
             
             self.dismissBg.alpha = self.dismissViewAlpha
             var toRect = to.view.frame
@@ -348,7 +350,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             toRect.origin.x = (self.edgeType == .left ? 0 : from.view.bounds.width - sourceRect.width)
             to.view.frame = toRect
             
-        }, completion: { _ in
+        }, completion: { [weak self] _ in
+            guard let `self` = self else { return }
             
             let canceled = context.transitionWasCancelled
             self.isAnimated = false
@@ -374,7 +377,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         
         to.viewWillAppear(true)
         
-        UIView.animate(withDuration: self.transitionDuration(using: context), animations: {
+        UIView.animate(withDuration: self.transitionDuration(using: context), animations: { [weak self] in
+            guard let `self` = self else { return }
             
             var rect = from.view.frame
             
@@ -382,7 +386,8 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             from.view.frame = rect
             self.dismissBg.alpha = 0
             
-        }, completion: { _ in
+        }, completion: { [weak self] _ in
+            guard let `self` = self else { return }
             
             let canceled = context.transitionWasCancelled
             self.isAnimated = false

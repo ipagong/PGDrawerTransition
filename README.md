@@ -4,7 +4,7 @@ Drawer View Transition (Objective-C)
 
 - just implements 'UIPercentDrivenInteractiveTransition' protocol.  
 
-- updated Swift3.0 version. 
+- work Swift 4.x version. 
 
 - use 1.0.1 (tag) for objective-c. 
 

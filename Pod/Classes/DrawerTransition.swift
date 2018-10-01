@@ -175,7 +175,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         case .began:
             self.hasInteraction = true
             self.presentDrawerAction()
-            
+
         case .changed:
 
             self.update(percentage)
@@ -293,7 +293,12 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         container.addSubview(self.dismissButton)
         target.view.addSubview(self.innerButton)
         
+        #if swift(>=4.2)
+        container.bringSubviewToFront(drawer.view)
+        #else
         container.bringSubview(toFront: drawer.view)
+        #endif
+        
     }
     
     private func removeDismissView() {
@@ -453,7 +458,7 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     private func gestureRecognizerShouldBegin(_ panGestureRecognizer: UIPanGestureRecognizer) -> Bool {
         guard let drawer = self.drawer else { return false }
         let velocity = panGestureRecognizer.velocity(in: drawer.view)
-        return fabs(velocity.x) > fabs(velocity.y)
+        return abs(velocity.x) > abs(velocity.y)
     }
     
     //MARK: - public methods

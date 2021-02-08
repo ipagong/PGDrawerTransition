@@ -131,13 +131,13 @@ public class DrawerTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return dismissBg
     }()
     
-    lazy private var mainViewGesutre:UIScreenEdgePanGestureRecognizer = {
+    lazy public var mainViewGesutre:UIScreenEdgePanGestureRecognizer = {
         let gesutre = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(onMainGesture(_:)))
         gesutre.edges = self.gestureEdge
         return gesutre
     }()
     
-    lazy private var drawerViewGesture:UIPanGestureRecognizer = {
+    lazy public var drawerViewGesture:UIPanGestureRecognizer = {
         let gesutre = UIPanGestureRecognizer(target: self, action: #selector(onDrawerGesture(_:)))
         gesutre.delegate = self
         return gesutre
